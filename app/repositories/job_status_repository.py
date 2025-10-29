@@ -9,7 +9,7 @@ class JobStatusRepository:
         self.collection = db.job_status
 
     async def create_job_status(self, job_status: BaseJobStatus):
-        return await self.collection.insert_one(job_status)
+        await self.collection.insert_one(job_status.model_dump())
 
     async def get_job_status(self) -> list[JobStatusResponse]:
         documents = []
@@ -17,6 +17,9 @@ class JobStatusRepository:
             document["_id"] = str(document["_id"])
             documents.append(document)
         return documents
+    
+    async def get_job_status_count(self):
+        return await self.collection.count_documents({})
 
     async def get_job_status_by_id(self, job_status_id: str) -> JobStatusResponse:
         job_status_response = await self.collection.find_one(
@@ -27,12 +30,11 @@ class JobStatusRepository:
 
     async def update_job_status(
         self, job_status_id: str, job_status: BaseJobStatus
-    ) -> JobStatusResponse:
-        job_status_response = await self.collection.update_one(
-            {"_id": ObjectId(job_status_id)}, {"$set": job_status}
+    ) -> None:
+        await self.collection.update_one(
+            {"_id": ObjectId(job_status_id)}, {"$set": job_status.model_dump()}
         )
-        job_status_response["_id"] = str(job_status_response["_id"])
-        return job_status_response
+        
 
     async def delete_job_status(self, job_status_id: str):
-        return await self.collection.delete_one({"_id": ObjectId(job_status_id)})
+        await self.collection.delete_one({"_id": ObjectId(job_status_id)})

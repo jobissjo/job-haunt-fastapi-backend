@@ -10,6 +10,9 @@ class UserRepository:
 
     async def create_user(self, user: RegisterUserSchema):
         return await self.collection.insert_one(user.model_dump())
+    
+    async def get_users_count(self):
+        return await self.collection.count_documents({})
 
     async def get_users(self):
         documents = []
