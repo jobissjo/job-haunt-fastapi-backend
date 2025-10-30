@@ -11,7 +11,7 @@ class JobApplicationRepository:
     async def create_job_application(
         self, job_application: JobApplicationSchema, user_id: str
     ):
-        await self.collection.insert_one(
+        result = await self.collection.insert_one(
             {
                 **job_application.model_dump(),
                 "user_id": ObjectId(user_id),
@@ -23,6 +23,7 @@ class JobApplicationRepository:
                 "application_url": str(job_application.application_url),
             }
         )
+        return result.inserted_id
 
     async def get_job_applications(self, user_id: str) -> list[JobApplicationSchema]:
         documents = []

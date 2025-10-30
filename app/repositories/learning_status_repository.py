@@ -33,13 +33,11 @@ class LearningStatusRepository:
 
     async def update_learning_status(
         self, learning_status_id: str, learning_status: LearningStatusSchema
-    ) -> LearningStatusResponse:
-        learning_status_response = await self.collection.update_one(
+    ) -> None:
+        await self.collection.update_one(
             {"_id": ObjectId(learning_status_id)},
             {"$set": learning_status.model_dump()},
         )
-        learning_status_response["_id"] = str(learning_status_response["_id"])
-        return learning_status_response
 
     async def delete_learning_status(self, learning_status_id: str):
-        return await self.collection.delete_one({"_id": ObjectId(learning_status_id)})
+        await self.collection.delete_one({"_id": ObjectId(learning_status_id)})

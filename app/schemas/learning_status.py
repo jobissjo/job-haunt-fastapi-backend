@@ -8,7 +8,7 @@ from app.schemas.common import BaseResponseSchema
 
 class LearningStatusSchema(BaseModel):
     name: str
-    category: Literal["started", "in_progress", "completed"]
+    category: Literal["start", "in_progress", "completed"]
     color: str
 
     model_config = ConfigDict(populate_by_name=True)
