@@ -1,7 +1,7 @@
 from bson.objectid import ObjectId
 
 from app.database import db
-from app.schemas.job_skill import JobSkillSchema, JobSkillResponse
+from app.schemas.job_skill import JobSkillResponse, JobSkillSchema
 
 
 class JobSkillRepository:

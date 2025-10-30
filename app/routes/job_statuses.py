@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends
 
-from app.schemas.job_status import BaseJobStatus, JobStatusDetailResponse, JobStatusListResponse, JobStatusResponse
 from app.schemas.common import BaseResponseSchema
+from app.schemas.job_status import (BaseJobStatus, JobStatusDetailResponse,
+                                    JobStatusListResponse, JobStatusResponse)
 from app.services.job_statuses import JobStatusService
 
 router = APIRouter(prefix="/job-statuses", tags=["Job Statuses"])

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from bson import ObjectId
 
 from app.database import db
@@ -9,7 +11,7 @@ class UserRepository:
         self.collection = db.users
 
     async def create_user(self, user: RegisterUserSchema):
-        return await self.collection.insert_one(user.model_dump())
+        return await self.collection.insert_one({**user.model_dump(), 'is_active': True, 'join_date': datetime.now()})
     
     async def get_users_count(self):
         return await self.collection.count_documents({})

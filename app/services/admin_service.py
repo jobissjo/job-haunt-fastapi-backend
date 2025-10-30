@@ -1,7 +1,9 @@
-from app.repositories.user_repository import UserRepository
 from app.repositories.job_skills import JobSkillRepository
 from app.repositories.job_status_repository import JobStatusRepository
+from app.repositories.user_repository import UserRepository
 from app.schemas.admin_schema import AdminStats, AdminStatsResponse
+
+
 class AdminService:
     def __init__(self):
         self.User_repository = UserRepository()

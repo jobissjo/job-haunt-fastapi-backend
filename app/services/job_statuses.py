@@ -1,6 +1,7 @@
 from app.repositories.job_status_repository import JobStatusRepository
-from app.schemas.job_status import BaseJobStatus, JobStatusDetailResponse, JobStatusListResponse, JobStatusResponse
 from app.schemas.common import BaseResponseSchema
+from app.schemas.job_status import (BaseJobStatus, JobStatusDetailResponse,
+                                    JobStatusListResponse, JobStatusResponse)
 
 
 class JobStatusService:

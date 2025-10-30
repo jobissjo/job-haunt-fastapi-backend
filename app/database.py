@@ -1,6 +1,6 @@
 from urllib.parse import quote_plus
 
-from pymongo import  AsyncMongoClient
+from pymongo import AsyncMongoClient
 
 from app.settings import settings
 

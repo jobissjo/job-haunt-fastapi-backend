@@ -1,10 +1,7 @@
 from app.repositories.job_skills import JobSkillRepository
-from app.schemas.job_skill import (
-    JobSkillDetailResponse,
-    JobSkillListResponse,
-    JobSkillResponse,
-    JobSkillSchema,
-)
+from app.schemas.job_skill import (JobSkillDetailResponse,
+                                   JobSkillListResponse, JobSkillResponse,
+                                   JobSkillSchema)
 
 
 class JobSkillService:

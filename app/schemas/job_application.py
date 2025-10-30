@@ -6,14 +6,12 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field, HttpUrl
 from app.schemas.common import BaseResponseSchema
 
 
-class JobApplication(BaseModel):
+class JobApplicationSchema(BaseModel):
     position: str
     company_name: str
     location: Optional[str] = None
     applied_date: Optional[date] = None
-    status: int = Field(
-        default=0, description="Application status code (e.g., 0=open, 1=applied, etc.)"
-    )
+    status: str = Field(description="Application status reference id")
     skills: List[str] = Field(default_factory=list, description="List of skill IDs")
     preferred_skills: List[str] = Field(
         default_factory=list, description="List of preferred skill IDs"
@@ -35,7 +33,7 @@ class JobApplication(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
 
-class JobApplicationResponse(JobApplication):
+class JobApplicationResponse(JobApplicationSchema):
     id: str = Field(default_factory=str, alias="_id")
     model_config = ConfigDict(populate_by_name=True)
 

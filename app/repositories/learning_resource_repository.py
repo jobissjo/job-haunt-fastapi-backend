@@ -1,7 +1,8 @@
 from bson.objectid import ObjectId
 
 from app.database import db
-from app.schemas.learning_resource import LearningResource, LearningResourceResponse
+from app.schemas.learning_resource import (LearningResource,
+                                           LearningResourceResponse)
 
 
 class LearningResourceRepository:

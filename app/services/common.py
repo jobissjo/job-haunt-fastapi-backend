@@ -71,6 +71,7 @@ class CommonService:
             payload = await asyncio.to_thread(
                 jwt.decode, token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
             )
+            print(payload, 'payload')
             if payload.get("token_type") != "refresh":
                 raise CustomException("Invalid token type", status_code=401)
             user_id: int = payload.get("user_id")
@@ -90,9 +91,10 @@ class CommonService:
             payload = await asyncio.to_thread(
                 jwt.decode, token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
             )
+            print(payload, 'payload')
             if payload.get("token_type") != "access":
                 raise CustomException("Invalid token type", status_code=401)
-            user_id: str = payload.get("user_id")
+            user_id: str = payload.get("id")
             if user_id is None:
                 raise CustomException("Token is missing user id", status_code=401)
             return UserTokenDecodedData(**payload)
@@ -115,3 +117,11 @@ class CommonService:
         else:
             username = user_input
         return username, email, phone_number
+    
+    @staticmethod
+    async def to_datetime(date_obj):
+        if isinstance(date_obj, datetime):
+            return date_obj
+        elif hasattr(date_obj, "year"):
+            return datetime(date_obj.year, date_obj.month, date_obj.day)
+        return date_obj

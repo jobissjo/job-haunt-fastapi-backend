@@ -6,7 +6,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from app.schemas.common import BaseResponseSchema
 
 
-class LearningStatus(BaseModel):
+class LearningStatusSchema(BaseModel):
     name: str
     category: Literal["started", "in_progress", "completed"]
     color: str
@@ -14,7 +14,7 @@ class LearningStatus(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
 
-class LearningStatusResponse(LearningStatus):
+class LearningStatusResponse(LearningStatusSchema):
     id: str = Field(default_factory=str, alias="_id")
     model_config = ConfigDict(populate_by_name=True)
 

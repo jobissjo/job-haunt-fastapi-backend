@@ -1,7 +1,8 @@
 from bson.objectid import ObjectId
 
 from app.database import db
-from app.schemas.learning_status import LearningStatus, LearningStatusResponse
+from app.schemas.learning_status import (LearningStatusResponse,
+                                         LearningStatusSchema)
 
 
 class LearningStatusRepository:
@@ -9,13 +10,13 @@ class LearningStatusRepository:
         self.collection = db.learning_status
 
     async def create_learning_status(
-        self, learning_status: LearningStatus
+        self, learning_status: LearningStatusSchema
     ) -> LearningStatusResponse:
-        return await self.collection.insert_one(learning_status)
+        return await self.collection.insert_one(learning_status.model_dump())
 
-    async def get_learning_status(self) -> list[LearningStatusResponse]:
+    async def get_learning_status(self,user_id: str) -> list[LearningStatusResponse]:
         documents = []
-        async for document in self.collection.find():
+        async for document in self.collection.find({"user_id": user_id}):
             document["_id"] = str(document["_id"])
             documents.append(document)
         return documents
@@ -30,10 +31,10 @@ class LearningStatusRepository:
         return learning_status_response
 
     async def update_learning_status(
-        self, learning_status_id: str, learning_status: LearningStatus
+        self, learning_status_id: str, learning_status: LearningStatusSchema
     ) -> LearningStatusResponse:
         learning_status_response = await self.collection.update_one(
-            {"_id": ObjectId(learning_status_id)}, {"$set": learning_status}
+            {"_id": ObjectId(learning_status_id)}, {"$set": learning_status.model_dump()}
         )
         learning_status_response["_id"] = str(learning_status_response["_id"])
         return learning_status_response

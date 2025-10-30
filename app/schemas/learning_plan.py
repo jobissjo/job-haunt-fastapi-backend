@@ -6,7 +6,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from app.schemas.common import BaseResponseSchema
 
 
-class LearningPlan(BaseModel):
+class LearningPlanSchema(BaseModel):
     name: str
     description: Optional[str] = None
     expected_started_date: Optional[date] = Field(
@@ -31,7 +31,7 @@ class LearningPlan(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
 
-class LearningPlanResponse(LearningPlan):
+class LearningPlanResponse(LearningPlanSchema):
     id: str = Field(default_factory=str, alias="_id")
     model_config = ConfigDict(populate_by_name=True)
 
