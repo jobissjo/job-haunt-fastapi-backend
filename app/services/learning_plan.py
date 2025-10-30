@@ -51,6 +51,18 @@ class LearningPlanService:
     async def update_learning_plan(
         self, learning_plan_id: str, learning_plan: LearningPlanSchema
     ) -> BaseResponseSchema:
+        learning_plan.expected_started_date = await CommonService.to_datetime(
+            learning_plan.expected_started_date
+        )
+        learning_plan.expected_completed_date = await CommonService.to_datetime(
+            learning_plan.expected_completed_date
+        )
+        learning_plan.actual_started_date = await CommonService.to_datetime(
+            learning_plan.actual_started_date
+        )
+        learning_plan.actual_completed_date = await CommonService.to_datetime(
+            learning_plan.actual_completed_date
+        )
         await self.repository.update_learning_plan(learning_plan_id, learning_plan)
         return {"message": "Learning plan updated successfully", "success": True}
 

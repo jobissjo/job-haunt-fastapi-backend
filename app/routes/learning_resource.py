@@ -17,24 +17,26 @@ router = APIRouter(prefix="/learning-resources", tags=["Learning Resources"])
 async def get_learning_resources(
     service: LearningResourceService = Depends(LearningResourceService),
     user_data: UserTokenDecodedData = Depends(CommonService.verify_token_get_user),
+    learning_management: str = "",
 ) -> LearningResourceListResponse:
-    return await service.get_learning_resources(user_data.id)
+    return await service.get_learning_resources(user_data.id, learning_management)
 
 
 @router.get("/{learning_resource_id}")
 async def get_learning_resource_by_id(
-    learning_resource_id: str,
+    learning_resource: str,
     service: LearningResourceService = Depends(LearningResourceService),
 ) -> LearningResourceDetailResponse:
-    return await service.get_learning_resource_by_id(learning_resource_id)
+    return await service.get_learning_resource_by_id(learning_resource)
 
 
 @router.post("/")
 async def create_learning_resource(
     learning_resource: LearningResource,
     service: LearningResourceService = Depends(LearningResourceService),
+    user_data: UserTokenDecodedData = Depends(CommonService.verify_token_get_user),
 ) -> BaseResponseSchema:
-    return await service.create_learning_resource(learning_resource)
+    return await service.create_learning_resource(learning_resource, user_data.id)
 
 
 @router.put("/{learning_resource_id}")

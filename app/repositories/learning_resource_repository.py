@@ -11,7 +11,7 @@ class LearningResourceRepository:
     async def create_learning_resource(
         self, learning_resource: LearningResource, user_id
     ):
-        return await self.collection.insert_one(
+        await self.collection.insert_one(
             {
                 **learning_resource.model_dump(),
                 "learning_management": ObjectId(learning_resource.learning_management),
@@ -29,6 +29,9 @@ class LearningResourceRepository:
             filters["learning_management"] = ObjectId(learning_management_id)
         async for document in self.collection.find(filters):
             document["_id"] = str(document["_id"])
+            document["learning_management"] = str(document["learning_management"])
+            document["status"] = str(document["status"])
+            document["user_id"] = str(document["user_id"])
             documents.append(document)
         return documents
 
