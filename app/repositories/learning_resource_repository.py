@@ -1,20 +1,33 @@
 from bson.objectid import ObjectId
 
 from app.database import db
-from app.schemas.learning_resource import (LearningResource,
-                                           LearningResourceResponse)
+from app.schemas.learning_resource import LearningResource, LearningResourceResponse
 
 
 class LearningResourceRepository:
     def __init__(self):
         self.collection = db.learning_resources
 
-    async def create_learning_resource(self, learning_resource):
-        return await self.collection.insert_one(learning_resource)
+    async def create_learning_resource(
+        self, learning_resource: LearningResource, user_id
+    ):
+        return await self.collection.insert_one(
+            {
+                **learning_resource.model_dump(),
+                "learning_management": ObjectId(learning_resource.learning_management),
+                "status": ObjectId(learning_resource.status),
+                "user_id": ObjectId(user_id),
+            }
+        )
 
-    async def get_learning_resources(self) -> list[LearningResourceResponse]:
+    async def get_learning_resources(
+        self, user_id: str, learning_management_id: str = None
+    ) -> list[LearningResourceResponse]:
         documents = []
-        async for document in self.collection.find():
+        filters = {"user_id": ObjectId(user_id)}
+        if learning_management_id:
+            filters["learning_management"] = ObjectId(learning_management_id)
+        async for document in self.collection.find(filters):
             document["_id"] = str(document["_id"])
             documents.append(document)
         return documents

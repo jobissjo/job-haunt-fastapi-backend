@@ -1,6 +1,10 @@
 from app.repositories.user_repository import UserRepository
-from app.schemas.user import (LoginUserSchema, RegisterUserSchema,
-                              UserDetailResponse, UserListResponse)
+from app.schemas.user import (
+    LoginUserSchema,
+    RegisterUserSchema,
+    UserDetailResponse,
+    UserListResponse,
+)
 from app.services.common import CommonService
 
 

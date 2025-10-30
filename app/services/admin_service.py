@@ -10,14 +10,18 @@ class AdminService:
         self.JobSkillRepository = JobSkillRepository()
         self.JobStatusRepository = JobStatusRepository()
 
-    async def get_stats(self)->AdminStatsResponse:
+    async def get_stats(self) -> AdminStatsResponse:
         users_count = await self.User_repository.get_users_count()
         job_skills_count = await self.JobSkillRepository.get_job_skills_count()
         job_statuses_count = await self.JobStatusRepository.get_job_status_count()
-        admin_stats = AdminStats(**{
-            "total_users": users_count,
-            "total_skills": job_skills_count,
-            "total_statuses": job_statuses_count or 0,
-            "recent_activity":0
-        })
-        return AdminStatsResponse(data=admin_stats, success=True, message="Admin stats retrieved successfully")
+        admin_stats = AdminStats(
+            **{
+                "total_users": users_count,
+                "total_skills": job_skills_count,
+                "total_statuses": job_statuses_count or 0,
+                "recent_activity": 0,
+            }
+        )
+        return AdminStatsResponse(
+            data=admin_stats, success=True, message="Admin stats retrieved successfully"
+        )

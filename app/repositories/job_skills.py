@@ -17,7 +17,7 @@ class JobSkillRepository:
             document["_id"] = str(document["_id"])
             documents.append(document)
         return documents
-    
+
     async def get_job_skills_count(self):
         return await self.collection.count_documents({})
 
@@ -28,10 +28,10 @@ class JobSkillRepository:
         job_skill_response["_id"] = str(job_skill_response["_id"])
         return job_skill_response
 
-    async def update_job_skill(self, job_skill_id, job_skill:JobSkillSchema)->None:
+    async def update_job_skill(self, job_skill_id, job_skill: JobSkillSchema) -> None:
         await self.collection.update_one(
             {"_id": ObjectId(job_skill_id)}, {"$set": job_skill.model_dump()}
         )
-        
+
     async def delete_job_skill(self, job_skill_id):
         return await self.collection.delete_one({"_id": ObjectId(job_skill_id)})

@@ -1,7 +1,11 @@
 from app.repositories.job_status_repository import JobStatusRepository
 from app.schemas.common import BaseResponseSchema
-from app.schemas.job_status import (BaseJobStatus, JobStatusDetailResponse,
-                                    JobStatusListResponse, JobStatusResponse)
+from app.schemas.job_status import (
+    BaseJobStatus,
+    JobStatusDetailResponse,
+    JobStatusListResponse,
+    JobStatusResponse,
+)
 
 
 class JobStatusService:
@@ -31,7 +35,9 @@ class JobStatusService:
             "message": "Job status created successfully",
         }
 
-    async def update_job_status(self, job_status_id, job_status: BaseJobStatus) -> BaseResponseSchema:
+    async def update_job_status(
+        self, job_status_id, job_status: BaseJobStatus
+    ) -> BaseResponseSchema:
         await self.repository.update_job_status(job_status_id, job_status)
         return {
             "success": True,

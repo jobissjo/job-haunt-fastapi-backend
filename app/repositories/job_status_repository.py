@@ -17,7 +17,7 @@ class JobStatusRepository:
             document["_id"] = str(document["_id"])
             documents.append(document)
         return documents
-    
+
     async def get_job_status_count(self):
         return await self.collection.count_documents({})
 
@@ -34,7 +34,6 @@ class JobStatusRepository:
         await self.collection.update_one(
             {"_id": ObjectId(job_status_id)}, {"$set": job_status.model_dump()}
         )
-        
 
     async def delete_job_status(self, job_status_id: str):
         await self.collection.delete_one({"_id": ObjectId(job_status_id)})

@@ -11,6 +11,7 @@ class UserSkillSchema(BaseModel):
     level: Literal["beginner", "intermediate", "advanced", "expert"]
     confidence: int
 
+
 class UserSkillResponse(UserSkillSchema):
     id: str = Field(default_factory=str, alias="_id")
     skill_detail: JobSkillResponse
@@ -27,5 +28,3 @@ class UserSkillDetailResponse(BaseResponseSchema):
     data: UserSkillResponse
 
     model_config = ConfigDict(populate_by_name=True)
-    
-    

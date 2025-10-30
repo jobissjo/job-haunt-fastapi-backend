@@ -1,7 +1,9 @@
 from datetime import date
 from typing import Literal, Optional
 
-from pydantic import BaseModel, Field, HttpUrl
+from pydantic import BaseModel, ConfigDict, Field
+
+from app.schemas.common import BaseResponseSchema
 
 
 class LearningResource(BaseModel):
