@@ -91,21 +91,21 @@ class UserService:
     
     async def update_user_resume(self, user_id: str, resume: UploadFile):
         cloudinary_service = CloudinaryService()
-        resume_url_info = await cloudinary_service.upload_document(resume.file)
+        resume_url_info = await cloudinary_service.upload_document(resume)
         await self.repository.update_user_resume(user_id, resume_url_info["url"])
         return {"success": True, "message": "Resume updated successfully", 
         'data': {'resume': resume_url_info["url"]}}
     
     async def update_user_profile_picture(self, user_id: str, profile_picture: UploadFile):
         cloudinary_service = CloudinaryService()
-        profile_picture_url_info = await cloudinary_service.upload_document(profile_picture.file)
+        profile_picture_url_info = await cloudinary_service.upload_document(profile_picture)
         await self.repository.update_user_profile_picture(user_id, profile_picture_url_info["url"])
         return {"success": True, "message": "Profile picture updated successfully", 
             'data': {'profile_picture': profile_picture_url_info["url"]}}
     
     async def update_user_cover_picture(self, user_id: str, cover_picture: UploadFile):
         cloudinary_service = CloudinaryService()
-        cover_picture_url_info = await cloudinary_service.upload_document(cover_picture.file)
+        cover_picture_url_info = await cloudinary_service.upload_image(cover_picture)
         await self.repository.update_user_cover_picture(user_id, cover_picture_url_info["url"])
         return {"success": True, "message": "Cover picture updated successfully", 
             'data': {'cover_picture': cover_picture_url_info["url"]}}

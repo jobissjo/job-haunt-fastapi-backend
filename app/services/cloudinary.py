@@ -1,7 +1,8 @@
 import cloudinary
 import cloudinary.uploader
 from app.settings import settings
-
+import os
+from fastapi import UploadFile
 
 class CloudinaryService:
     def __init__(self):
@@ -11,13 +12,13 @@ class CloudinaryService:
             api_secret=settings.CLOUDINARY_API_SECRET,
         )
 
-    async def upload_image(self, file):
+    async def upload_image(self, file:UploadFile):
         """
         Upload an image file to Cloudinary.
         """
         try:
             result = cloudinary.uploader.upload(
-                file,
+                file.file,
                 folder="images/",  # optional folder in your Cloudinary account
                 resource_type="image",
             )
@@ -29,15 +30,19 @@ class CloudinaryService:
         except Exception as e:
             raise Exception(f"Image upload failed: {e}")
 
-    async def upload_document(self, file):
+    async def upload_document(self, file:UploadFile):
         """
         Upload a document (PDF, DOCX, etc.) to Cloudinary.
         """
         try:
+            filename, ext = os.path.splitext(file.filename)
             result = cloudinary.uploader.upload(
-                file,
+                file.file,
                 folder="documents/",
-                resource_type="raw",  # use raw for non-image files
+                resource_type="raw",  # use raw for non-image files,
+                public_id=f'{filename}{ext}',
+                unique_filename=True,
+                overwrite=False,
             )
             return {
                 "url": result.get("secure_url"),
