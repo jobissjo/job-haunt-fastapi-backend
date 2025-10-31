@@ -20,6 +20,8 @@ class JobPreferenceRepository:
         data = await self.collection.find_one(
             {"user_id": ObjectId(user_id)}
         )
+        if data is None:
+            return None
         data['_id'] = str(data['_id'])
         data['user_id'] = str(data['user_id'])
         return data
