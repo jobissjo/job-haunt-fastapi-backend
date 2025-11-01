@@ -11,6 +11,7 @@ from app.schemas.user import (
 from app.services.common import CommonService
 from fastapi import UploadFile
 from app.services.cloudinary import CloudinaryService
+from fastapi.exceptions import HTTPException
 
 
 class UserService:
@@ -18,6 +19,15 @@ class UserService:
         self.repository = UserRepository()
 
     async def register_user(self, user: RegisterUserSchema):
+        username_exists = await self.repository.get_user_by_username(user.username)
+        if username_exists:
+            raise HTTPException(status_code=400, detail="Username already exists")
+        email_exists = await self.repository.get_user_by_email(user.email)
+        if email_exists:
+            raise HTTPException(status_code=400, detail="Email already exists")
+        phone_number_exists = await self.repository.get_user_by_phone_number(user.phone_number)
+        if phone_number_exists:
+            raise HTTPException(status_code=400, detail="Phone number already exists")
         hashed_password = await CommonService.hash_password(user.password)
         user.password = hashed_password
         user = await self.repository.create_user(user)
@@ -31,11 +41,11 @@ class UserService:
             username, email, phone_number
         )
         if not user:
-            return {"success": False, "message": "User not found"}
+            raise HTTPException(status_code=404, detail="User not found")
         if not await CommonService.verify_password(
             user_data.password, user["password"]
         ):
-            return {"success": False, "message": "Incorrect password"}
+            raise HTTPException(status_code=401, detail="Incorrect password")
         access_token = await CommonService.create_access_token(
             {
                 "id": user["_id"],

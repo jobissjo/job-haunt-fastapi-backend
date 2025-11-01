@@ -8,10 +8,13 @@ from app.schemas.user import (
     UserTokenDecodedData,
     UpdateUserProfileSchema,
     UpdateUserPasswordSchema,
+    TokenResponseSchema,
 )
 from app.services.user_service import UserService
 from app.services.common import CommonService
 from fastapi import File, UploadFile
+from app.schemas.common import BaseResponseSchema
+
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -19,7 +22,7 @@ router = APIRouter(prefix="/users", tags=["Users"])
 @router.post("/")
 async def register_user(
     user: RegisterUserSchema, service: UserService = Depends(UserService)
-):
+)->BaseResponseSchema:
     return await service.register_user(user)
 
 
@@ -31,7 +34,7 @@ async def get_users(service: UserService = Depends(UserService)) -> UserListResp
 @router.post("/login/")
 async def login_user(
     user: LoginUserSchema, service: UserService = Depends(UserService)
-):
+)->TokenResponseSchema:
     return await service.login_user(user)
 
 @router.get("/me/")

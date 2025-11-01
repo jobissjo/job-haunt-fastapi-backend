@@ -39,11 +39,29 @@ class UserRepository:
 
     async def get_user_by_id(self, user_id):
         user_response = await self.collection.find_one({"_id": ObjectId(user_id)})
+        if user_response is None:
+            return None
         user_response["_id"] = str(user_response["_id"])
         return user_response
 
     async def get_user_by_email(self, email):
         user_response = await self.collection.find_one({"email": email})
+        if user_response is None:
+            return None
+        user_response["_id"] = str(user_response["_id"])
+        return user_response
+    
+    async def get_user_by_username(self, username):
+        user_response = await self.collection.find_one({"username": username})
+        if user_response is None:
+            return None
+        user_response["_id"] = str(user_response["_id"])
+        return user_response
+    
+    async def get_user_by_phone_number(self, phone_number):
+        user_response = await self.collection.find_one({"phone_number": phone_number})
+        if user_response is None:
+            return None
         user_response["_id"] = str(user_response["_id"])
         return user_response
 
@@ -61,7 +79,8 @@ class UserRepository:
             user_response = await self.collection.find_one(
                 {"phone_number": phone_number}
             )
-
+        if user_response is None:
+            return None
         user_response["_id"] = str(user_response["_id"])
         return user_response
 

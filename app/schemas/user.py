@@ -39,6 +39,12 @@ class NotificationPreference(BaseModel):
     sms: bool = True
     push: bool = True
 
+class UserSchemaResponse(BaseUserSchema):
+    id: str = Field(default_factory=str, alias="_id")
+    # password = Field(exclude=True)
+    # profile: Profile = Field(..., alias="profile")
+    # social_links: Optional[str] = None
+    model_config = ConfigDict(populate_by_name=True, exclude={"password"})
 
 class UpdateUserProfileSchema(BaseUserSchema):
     social_links: SocialLinksSchema
@@ -76,3 +82,8 @@ class UpdateUserPasswordSchema(BaseModel):
     old_password: str
     new_password: str
     new_password_confirm: str
+
+class TokenResponseSchema(BaseModel):
+    access_token: str
+    refresh_token: str
+    user: UserSchemaResponse

@@ -8,7 +8,7 @@ from app.schemas.common import BaseResponseSchema
 
 class LearningResource(BaseModel):
     name: str
-    resource_type: Literal["video", "document", "quiz", "link", "article", "course"] = (
+    resource_type: Literal["video", "document", "quiz", "link", "article", "course", 'other'] = (
         Field(..., description="Type of learning resource")
     )
     resource_url: Optional[str] = Field(

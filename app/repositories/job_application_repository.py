@@ -25,36 +25,74 @@ class JobApplicationRepository:
         )
         return result.inserted_id
 
-    async def get_job_applications(self, user_id: str) -> list[JobApplicationSchema]:
+    async def get_job_applications(self, user_id: str) -> list[dict]:
+        pipeline = [
+            {"$match": {"user_id": ObjectId(user_id)}},
+            
+            # Lookup for status
+            {
+                "$lookup": {
+                    "from": "job_status",
+                    "localField": "status",
+                    "foreignField": "_id",
+                    "as": "status_detail"
+                }
+            },
+            {"$unwind": {"path": "$status_detail", "preserveNullAndEmptyArrays": True}},
+            
+            # Lookup for skills
+            {
+                "$lookup": {
+                    "from": "job_skills",
+                    "localField": "skills",
+                    "foreignField": "_id",
+                    "as": "skills_detail"
+                }
+            },
+            
+            # Lookup for preferred skills
+            {
+                "$lookup": {
+                    "from": "job_skills",
+                    "localField": "preferred_skills",
+                    "foreignField": "_id",
+                    "as": "preferred_skills_detail"
+                }
+            },
+        ]
+
+        cursor = await self.collection.aggregate(pipeline)
         documents = []
-        async for document in self.collection.find({"user_id": ObjectId(user_id)}):
-            # Convert top-level ObjectIds to strings
-            document["_id"] = str(document["_id"])
-            document["user_id"] = str(document["user_id"])
+        async for doc in cursor:
+            # Convert ObjectIds to strings
+            doc["_id"] = str(doc["_id"])
+            doc["user_id"] = str(doc["user_id"])
 
-            # Convert status ObjectId to string if present
-            if "status" in document and isinstance(document["status"], ObjectId):
-                document["status"] = str(document["status"])
+            if "status" in doc and isinstance(doc["status"], ObjectId):
+                doc["status"] = str(doc["status"])
 
-            # Convert list of ObjectIds (skills)
-            if "skills" in document and isinstance(document["skills"], list):
-                document["skills"] = [
-                    str(skill) if isinstance(skill, ObjectId) else skill
-                    for skill in document["skills"]
-                ]
+            if "skills" in doc:
+                doc["skills"] = [str(s) for s in doc["skills"]]
 
-            # Convert list of ObjectIds (preferred_skills)
-            if "preferred_skills" in document and isinstance(
-                document["preferred_skills"], list
-            ):
-                document["preferred_skills"] = [
-                    str(skill) if isinstance(skill, ObjectId) else skill
-                    for skill in document["preferred_skills"]
-                ]
+            if "preferred_skills" in doc:
+                doc["preferred_skills"] = [str(s) for s in doc["preferred_skills"]]
 
-            documents.append(document)
+            # Convert nested details’ _id to string
+            if "status_detail" in doc and doc["status_detail"]:
+                doc["status_detail"]["_id"] = str(doc["status_detail"]["_id"])
+
+            if "skills_detail" in doc:
+                for s in doc["skills_detail"]:
+                    s["_id"] = str(s["_id"])
+
+            if "preferred_skills_detail" in doc:
+                for s in doc["preferred_skills_detail"]:
+                    s["_id"] = str(s["_id"])
+
+            documents.append(doc)
 
         return documents
+
 
     async def get_job_application_by_id(self, job_application_id: str):
         job_application_response = await self.collection.find_one(

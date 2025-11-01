@@ -4,7 +4,8 @@ from typing import List, Literal, Optional
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, HttpUrl
 
 from app.schemas.common import BaseResponseSchema
-
+from app.schemas.job_skill import JobSkillResponse
+from app.schemas.job_status import JobStatusResponse
 
 class JobApplicationSchema(BaseModel):
     position: str
@@ -23,7 +24,7 @@ class JobApplicationSchema(BaseModel):
     contact_mail: Optional[EmailStr] = None
     job_posted_date: Optional[date] = None
     job_closed_date: Optional[date] = None
-    application_through: Literal["email", "website", "referral", "other"] = Field(
+    application_through: Literal["email", "website", "referral", "other", "linkedin"] = Field(
         default="email", description="Medium of application"
     )
     application_url: Optional[HttpUrl] = Field(
@@ -35,6 +36,9 @@ class JobApplicationSchema(BaseModel):
 
 class JobApplicationResponse(JobApplicationSchema):
     id: str = Field(default_factory=str, alias="_id")
+    status_detail: Optional[JobStatusResponse] = None
+    skills_detail: Optional[List[JobSkillResponse]] = None
+    preferred_skills_detail: Optional[List[JobSkillResponse]] = None
     model_config = ConfigDict(populate_by_name=True)
 
 
