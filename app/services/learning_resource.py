@@ -57,6 +57,18 @@ class LearningResourceService:
     async def update_learning_resource(
         self, learning_resource_id: str, learning_resource: LearningResource
     ) -> BaseResponseSchema:
+        learning_resource.expected_started_date = await CommonService.to_datetime(
+            learning_resource.expected_started_date
+        )
+        learning_resource.expected_completed_date = await CommonService.to_datetime(
+            learning_resource.expected_completed_date
+        )
+        learning_resource.actual_started_date = await CommonService.to_datetime(
+            learning_resource.actual_started_date
+        )
+        learning_resource.actual_completed_date = await CommonService.to_datetime(
+            learning_resource.actual_completed_date
+        )
         await self.repository.update_learning_resource(
             learning_resource_id, learning_resource
         )

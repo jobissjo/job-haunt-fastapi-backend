@@ -54,12 +54,15 @@ class LearningResourceRepository:
 
     async def update_learning_resource(
         self, learning_resource_id: str, learning_resource: LearningResource
-    ) -> LearningResourceResponse:
-        learning_resource_response = await self.collection.update_one(
-            {"_id": ObjectId(learning_resource_id)}, {"$set": learning_resource}
+    ) -> None:
+        await self.collection.update_one(
+            {"_id": ObjectId(learning_resource_id)}, {"$set": 
+            {**learning_resource.model_dump(),
+            "learning_management": ObjectId(learning_resource.learning_management),
+            "status": ObjectId(learning_resource.status)},
+            }
         )
-        learning_resource_response["_id"] = str(learning_resource_response["_id"])
-        return learning_resource_response
+         
 
     async def delete_learning_resource(self, learning_resource_id: str):
         return await self.collection.delete_one({"_id": ObjectId(learning_resource_id)})
