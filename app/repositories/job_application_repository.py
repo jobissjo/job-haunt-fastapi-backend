@@ -28,35 +28,32 @@ class JobApplicationRepository:
     async def get_job_applications(self, user_id: str) -> list[dict]:
         pipeline = [
             {"$match": {"user_id": ObjectId(user_id)}},
-            
             # Lookup for status
             {
                 "$lookup": {
                     "from": "job_status",
                     "localField": "status",
                     "foreignField": "_id",
-                    "as": "status_detail"
+                    "as": "status_detail",
                 }
             },
             {"$unwind": {"path": "$status_detail", "preserveNullAndEmptyArrays": True}},
-            
             # Lookup for skills
             {
                 "$lookup": {
                     "from": "job_skills",
                     "localField": "skills",
                     "foreignField": "_id",
-                    "as": "skills_detail"
+                    "as": "skills_detail",
                 }
             },
-            
             # Lookup for preferred skills
             {
                 "$lookup": {
                     "from": "job_skills",
                     "localField": "preferred_skills",
                     "foreignField": "_id",
-                    "as": "preferred_skills_detail"
+                    "as": "preferred_skills_detail",
                 }
             },
         ]
@@ -92,7 +89,6 @@ class JobApplicationRepository:
             documents.append(doc)
 
         return documents
-
 
     async def get_job_application_by_id(self, job_application_id: str):
         job_application_response = await self.collection.find_one(

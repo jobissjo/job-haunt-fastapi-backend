@@ -10,15 +10,16 @@ class LearningPlanSchema(BaseModel):
     name: str
     description: Optional[str] = None
     expected_started_date: Optional[date] = Field(
-        default=None,   
+        default=None,
     )
     expected_completed_date: Optional[date] = Field(
-        default=None, 
+        default=None,
     )
-    actual_started_date: Optional[date] = Field(default=None, )
+    actual_started_date: Optional[date] = Field(
+        default=None,
+    )
     actual_completed_date: Optional[date] = Field(
         default=None,
-        
     )
     status: str = Field(..., description="Status of the learning plan")
     completed_percentage: Optional[float] = Field(

@@ -1,10 +1,11 @@
 from fastapi import HTTPException
+
 from app.repositories.user_email_settings_repository import UserEmailSettingsRepository
 from app.schemas.user_mail_settings import (
     EmailSettings,
-    EmailSettingsUpdate,
     EmailSettingsDetailResponse,
     EmailSettingsListResponse,
+    EmailSettingsUpdate,
 )
 
 
@@ -23,9 +24,7 @@ class UserEmailSettingsService:
             "data": data,
         }
 
-    async def get_email_settings(
-        self, user_id: str
-    ) -> EmailSettingsListResponse:
+    async def get_email_settings(self, user_id: str) -> EmailSettingsListResponse:
         """Get all email settings for a user"""
         data = await self.repository.get_email_settings(user_id)
         return {
@@ -75,9 +74,7 @@ class UserEmailSettingsService:
             "data": data,
         }
 
-    async def delete_email_setting(
-        self, email_setting_id: str, user_id: str
-    ) -> dict:
+    async def delete_email_setting(self, email_setting_id: str, user_id: str) -> dict:
         """Delete an email setting"""
         deleted = await self.repository.delete_email_setting(email_setting_id, user_id)
         if not deleted:

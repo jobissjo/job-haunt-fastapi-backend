@@ -1,7 +1,7 @@
 from app.repositories.learning_status_repository import LearningStatusRepository
 from app.schemas.kanban_board import (
-    KanbanBoardLearningResourceResponse,
     KanbanBoardLearningPlanResponse,
+    KanbanBoardLearningResourceResponse,
 )
 
 
@@ -15,7 +15,7 @@ class KanbanBoardService:
         data = await self.learning_status_repository.get_learning_status_with_resources(
             user_id
         )
-        print(data, 'data')
+        print(data, "data")
         return KanbanBoardLearningResourceResponse(
             data=data,
             message="Learning Resources fetched successfully",
@@ -28,7 +28,9 @@ class KanbanBoardService:
         data = await self.learning_status_repository.get_learning_status_with_plans(
             user_id
         )
-        print(data, 'data')
+        print(data, "data")
         return KanbanBoardLearningPlanResponse(
-            data=data, message="Learning Plans fetched successfully", success=True,
+            data=data,
+            message="Learning Plans fetched successfully",
+            success=True,
         )

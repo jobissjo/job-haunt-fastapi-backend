@@ -48,12 +48,12 @@ class LearningStatusRepository:
             {
                 "$lookup": {
                     "from": "learning_resources",  # the other collection name
-                    "localField": "_id",           # field in learning_status
-                    "foreignField": "status",      # field in learning_resources
-                    "as": "learning_resources"     # alias for nested data
+                    "localField": "_id",  # field in learning_status
+                    "foreignField": "status",  # field in learning_resources
+                    "as": "learning_resources",  # alias for nested data
                 }
             },
-            {"$project": {"user_id": 0}}  # optional: exclude user_id if not needed
+            {"$project": {"user_id": 0}},  # optional: exclude user_id if not needed
         ]
 
         cursor = await self.collection.aggregate(pipeline)
@@ -62,23 +62,23 @@ class LearningStatusRepository:
             document["_id"] = str(document["_id"])
             for resource in document.get("learning_resources", []):
                 resource["_id"] = str(resource["_id"])
-                resource['status'] = str(resource['status'])
-                resource['learning_management'] = str(resource['learning_management'])
+                resource["status"] = str(resource["status"])
+                resource["learning_management"] = str(resource["learning_management"])
             documents.append(document)
         return documents
-    
+
     async def get_learning_status_with_plans(self, user_id: str) -> list[dict]:
         pipeline = [
             {"$match": {"user_id": ObjectId(user_id)}},
             {
                 "$lookup": {
                     "from": "learning_plans",  # the other collection name
-                    "localField": "_id",           # field in learning_status
-                    "foreignField": "status",      # field in learning_resources
-                    "as": "learning_plans"     # alias for nested data
+                    "localField": "_id",  # field in learning_status
+                    "foreignField": "status",  # field in learning_resources
+                    "as": "learning_plans",  # alias for nested data
                 }
             },
-            {"$project": {"user_id": 0}}  # optional: exclude user_id if not needed
+            {"$project": {"user_id": 0}},  # optional: exclude user_id if not needed
         ]
 
         cursor = await self.collection.aggregate(pipeline)
@@ -87,6 +87,6 @@ class LearningStatusRepository:
             document["_id"] = str(document["_id"])
             for plan in document.get("learning_plans", []):
                 plan["_id"] = str(plan["_id"])
-                plan['status'] = str(plan['status'])
+                plan["status"] = str(plan["status"])
             documents.append(document)
         return documents

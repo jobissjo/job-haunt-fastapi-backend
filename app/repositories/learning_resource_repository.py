@@ -1,4 +1,5 @@
 from bson.objectid import ObjectId
+from typing import Optional
 
 from app.database import db
 from app.schemas.learning_resource import LearningResource, LearningResourceResponse
@@ -37,11 +38,18 @@ class LearningResourceRepository:
 
     async def get_learning_resource_by_id(
         self, learning_resource_id: str
-    ) -> LearningResourceResponse:
+    ) -> Optional[LearningResourceResponse]:
         learning_resource_response = await self.collection.find_one(
             {"_id": ObjectId(learning_resource_id)}
         )
+        if not learning_resource_response:
+            return None
         learning_resource_response["_id"] = str(learning_resource_response["_id"])
+        learning_resource_response["learning_management"] = str(
+            learning_resource_response["learning_management"]
+        )
+        learning_resource_response["status"] = str(learning_resource_response["status"])
+        learning_resource_response["user_id"] = str(learning_resource_response["user_id"])
         return learning_resource_response
 
     async def update_learning_resource(

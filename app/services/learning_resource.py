@@ -1,10 +1,10 @@
 from app.repositories.learning_resource_repository import LearningResourceRepository
-from app.services.common import CommonService
 from app.schemas.learning_resource import (
     BaseResponseSchema,
     LearningResource,
     LearningResourceResponse,
 )
+from app.services.common import CommonService
 
 
 class LearningResourceService:
@@ -26,13 +26,18 @@ class LearningResourceService:
         learning_resource.actual_completed_date = await CommonService.to_datetime(
             learning_resource.actual_completed_date
         )
-        await self.repository.create_learning_resource(learning_resource, user_id, )
+        await self.repository.create_learning_resource(
+            learning_resource,
+            user_id,
+        )
         return {"message": "Learning resource created successfully", "success": True}
 
     async def get_learning_resources(
         self, user_id: str, learning_management: str
     ) -> list[LearningResourceResponse]:
-        data = await self.repository.get_learning_resources(user_id, learning_management)
+        data = await self.repository.get_learning_resources(
+            user_id, learning_management
+        )
         return {
             "data": data,
             "message": "Learning resources fetched successfully",

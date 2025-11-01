@@ -1,6 +1,8 @@
 from datetime import datetime
+
 from pydantic import BaseModel, Field
 from pydantic.config import ConfigDict
+
 
 class JobApplicationAutomationSchema(BaseModel):
     job_application: str

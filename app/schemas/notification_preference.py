@@ -1,6 +1,9 @@
-from pydantic import BaseModel, ConfigDict, Field
-from app.schemas.common import BaseResponseSchema
 from typing import Optional
+
+from pydantic import BaseModel, ConfigDict, Field
+
+from app.schemas.common import BaseResponseSchema
+
 
 class NotificationPreference(BaseModel):
     email: bool = True
@@ -8,6 +11,7 @@ class NotificationPreference(BaseModel):
     in_app: bool = True
 
     model_config = ConfigDict(populate_by_name=True)
+
 
 class NotificationPreferenceUpdate(NotificationPreference):
     email: Optional[bool] = None
@@ -18,8 +22,6 @@ class NotificationPreferenceUpdate(NotificationPreference):
 class NotificationPreferenceResponse(NotificationPreference):
     id: str = Field(default_factory=str, alias="_id")
     model_config = ConfigDict(populate_by_name=True)
-
-
 
 
 class NotificationPreferenceDetailResponse(BaseResponseSchema):

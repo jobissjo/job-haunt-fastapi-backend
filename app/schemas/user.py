@@ -21,6 +21,7 @@ class BaseUserSchema(BaseModel):
 class RegisterUserSchema(BaseUserSchema):
     password: str = Field(..., alias="password")
 
+
 class SocialLinksSchema(BaseModel):
     linkedin: Optional[str] = None
     twitter: Optional[str] = None
@@ -34,10 +35,12 @@ class Profile(BaseModel):
     cover_picture: Optional[str] = None
     resume: Optional[str] = None
 
+
 class NotificationPreference(BaseModel):
     email: bool = True
     sms: bool = True
     push: bool = True
+
 
 class UserSchemaResponse(BaseUserSchema):
     id: str = Field(default_factory=str, alias="_id")
@@ -46,10 +49,11 @@ class UserSchemaResponse(BaseUserSchema):
     # social_links: Optional[str] = None
     model_config = ConfigDict(populate_by_name=True, exclude={"password"})
 
+
 class UpdateUserProfileSchema(BaseUserSchema):
     social_links: SocialLinksSchema
     profile: Profile
-    
+
 
 class UserResponseSchema(BaseUserSchema):
     id: str = Field(default_factory=str, alias="_id")
@@ -82,6 +86,7 @@ class UpdateUserPasswordSchema(BaseModel):
     old_password: str
     new_password: str
     new_password_confirm: str
+
 
 class TokenResponseSchema(BaseModel):
     access_token: str

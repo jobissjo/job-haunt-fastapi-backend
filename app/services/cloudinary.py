@@ -1,8 +1,11 @@
+import os
+
 import cloudinary
 import cloudinary.uploader
-from app.settings import settings
-import os
 from fastapi import UploadFile
+
+from app.settings import settings
+
 
 class CloudinaryService:
     def __init__(self):
@@ -12,7 +15,7 @@ class CloudinaryService:
             api_secret=settings.CLOUDINARY_API_SECRET,
         )
 
-    async def upload_image(self, file:UploadFile):
+    async def upload_image(self, file: UploadFile):
         """
         Upload an image file to Cloudinary.
         """
@@ -30,7 +33,7 @@ class CloudinaryService:
         except Exception as e:
             raise Exception(f"Image upload failed: {e}")
 
-    async def upload_document(self, file:UploadFile):
+    async def upload_document(self, file: UploadFile):
         """
         Upload a document (PDF, DOCX, etc.) to Cloudinary.
         """
@@ -40,7 +43,7 @@ class CloudinaryService:
                 file.file,
                 folder="documents/",
                 resource_type="raw",  # use raw for non-image files,
-                public_id=f'{filename}{ext}',
+                public_id=f"{filename}{ext}",
                 unique_filename=True,
                 overwrite=False,
             )

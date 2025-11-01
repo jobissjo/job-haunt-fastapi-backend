@@ -24,10 +24,10 @@ async def get_learning_resources(
 
 @router.get("/{learning_resource_id}")
 async def get_learning_resource_by_id(
-    learning_resource: str,
+    learning_resource_id: str,
     service: LearningResourceService = Depends(LearningResourceService),
 ) -> LearningResourceDetailResponse:
-    return await service.get_learning_resource_by_id(learning_resource)
+    return await service.get_learning_resource_by_id(learning_resource_id)
 
 
 @router.post("/")

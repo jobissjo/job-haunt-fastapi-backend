@@ -1,9 +1,12 @@
 from fastapi import APIRouter, Depends
+
+from app.schemas.kanban_board import (
+    KanbanBoardLearningPlanResponse,
+    KanbanBoardLearningResourceResponse,
+)
+from app.schemas.user import UserTokenDecodedData
 from app.services.common import CommonService
 from app.services.kanban_board import KanbanBoardService
-from app.schemas.kanban_board import KanbanBoardLearningPlanResponse, KanbanBoardLearningResourceResponse
-from app.schemas.user import UserTokenDecodedData
-
 
 router = APIRouter(prefix="/kanban-board", tags=["Kanban Boards"])
 

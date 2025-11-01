@@ -1,13 +1,14 @@
 from fastapi import APIRouter, Depends
-from app.services.common import CommonService
-from app.services.user_email_settings_service import UserEmailSettingsService
+
 from app.schemas.user import UserTokenDecodedData
 from app.schemas.user_mail_settings import (
     EmailSettings,
-    EmailSettingsUpdate,
     EmailSettingsDetailResponse,
     EmailSettingsListResponse,
+    EmailSettingsUpdate,
 )
+from app.services.common import CommonService
+from app.services.user_email_settings_service import UserEmailSettingsService
 
 router = APIRouter(prefix="/user-email-settings", tags=["User Email Settings"])
 
@@ -63,7 +64,9 @@ async def update_email_setting(
     )
 
 
-@router.patch("/{email_setting_id}/activate", response_model=EmailSettingsDetailResponse)
+@router.patch(
+    "/{email_setting_id}/activate", response_model=EmailSettingsDetailResponse
+)
 async def set_active_email_setting(
     email_setting_id: str,
     service: UserEmailSettingsService = Depends(UserEmailSettingsService),

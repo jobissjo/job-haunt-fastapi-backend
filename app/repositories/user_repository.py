@@ -12,18 +12,21 @@ class UserRepository:
 
     async def create_user(self, user: RegisterUserSchema):
         return await self.collection.insert_one(
-            {**user.model_dump(), "is_active": True, "join_date": datetime.now(),
-           "profile":{
-                "bio": None,
-                "profile_picture": None,
-                "cover_picture": None,
-                "resume": None,
-           },
-            "notification_preference": {
-                "email": True,
-                "sms": True,
-                "push": True,
-            },
+            {
+                **user.model_dump(),
+                "is_active": True,
+                "join_date": datetime.now(),
+                "profile": {
+                    "bio": None,
+                    "profile_picture": None,
+                    "cover_picture": None,
+                    "resume": None,
+                },
+                "notification_preference": {
+                    "email": True,
+                    "sms": True,
+                    "push": True,
+                },
             }
         )
 
@@ -50,14 +53,14 @@ class UserRepository:
             return None
         user_response["_id"] = str(user_response["_id"])
         return user_response
-    
+
     async def get_user_by_username(self, username):
         user_response = await self.collection.find_one({"username": username})
         if user_response is None:
             return None
         user_response["_id"] = str(user_response["_id"])
         return user_response
-    
+
     async def get_user_by_phone_number(self, phone_number):
         user_response = await self.collection.find_one({"phone_number": phone_number})
         if user_response is None:
@@ -84,7 +87,7 @@ class UserRepository:
         user_response["_id"] = str(user_response["_id"])
         return user_response
 
-    async def update_user(self, user_id, user:UpdateUserProfileSchema):
+    async def update_user(self, user_id, user: UpdateUserProfileSchema):
         await self.collection.update_one(
             {"_id": ObjectId(user_id)}, {"$set": user.model_dump()}
         )
@@ -102,13 +105,15 @@ class UserRepository:
         await self.collection.update_one(
             {"_id": ObjectId(user_id)}, {"$set": {"profile.resume": resume_url}}
         )
-    
+
     async def update_user_profile_picture(self, user_id, profile_picture_url):
         await self.collection.update_one(
-            {"_id": ObjectId(user_id)}, {"$set": {"profile.profile_picture": profile_picture_url}}
+            {"_id": ObjectId(user_id)},
+            {"$set": {"profile.profile_picture": profile_picture_url}},
         )
-    
+
     async def update_user_cover_picture(self, user_id, cover_picture_url):
         await self.collection.update_one(
-            {"_id": ObjectId(user_id)}, {"$set": {"profile.cover_picture": cover_picture_url}}
+            {"_id": ObjectId(user_id)},
+            {"$set": {"profile.cover_picture": cover_picture_url}},
         )

@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends
 
 from app.schemas.job_application import JobApplicationSchema
+from app.schemas.job_application_automation import JobApplicationAutomationSchema
 from app.schemas.user import UserTokenDecodedData
 from app.services.common import CommonService
 from app.services.job_application_service import JobApplicationService
-from app.schemas.job_application_automation import JobApplicationAutomationSchema
 
 router = APIRouter(prefix="/job-applications", tags=["Job Applications"])
 
@@ -29,6 +29,7 @@ async def get_job_applications(
 @router.get("/{job_application_id}")
 async def get_job_application_by_id(job_application_id: str):
     return await JobApplicationService().get_job_application_by_id(job_application_id)
+
 
 @router.post("/automation")
 async def create_job_application_automation(

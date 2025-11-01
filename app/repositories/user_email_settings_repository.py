@@ -1,4 +1,5 @@
 from bson import ObjectId
+
 from app.database import db
 from app.schemas.user_mail_settings import EmailSettings, EmailSettingsUpdate
 
@@ -14,14 +15,13 @@ class UserEmailSettingsRepository:
         # If this setting is marked as active, deactivate all other settings for this user
         if email_setting.is_active:
             await self.collection.update_many(
-                {"user_id": ObjectId(user_id)},
-                {"$set": {"is_active": False}}
+                {"user_id": ObjectId(user_id)}, {"$set": {"is_active": False}}
             )
-        
+
         result = await self.collection.insert_one(
             {**email_setting.model_dump(), "user_id": ObjectId(user_id)}
         )
-        
+
         created_setting = await self.collection.find_one({"_id": result.inserted_id})
         created_setting["_id"] = str(created_setting["_id"])
         created_setting["user_id"] = str(created_setting["user_id"])
@@ -63,19 +63,22 @@ class UserEmailSettingsRepository:
     ) -> dict | None:
         """Update an email setting"""
         update_data = email_setting.model_dump(exclude_unset=True)
-        
+
         # If setting is_active to True, deactivate all other settings
         if update_data.get("is_active") is True:
             await self.collection.update_many(
-                {"user_id": ObjectId(user_id), "_id": {"$ne": ObjectId(email_setting_id)}},
-                {"$set": {"is_active": False}}
+                {
+                    "user_id": ObjectId(user_id),
+                    "_id": {"$ne": ObjectId(email_setting_id)},
+                },
+                {"$set": {"is_active": False}},
             )
-        
+
         result = await self.collection.update_one(
             {"_id": ObjectId(email_setting_id), "user_id": ObjectId(user_id)},
             {"$set": update_data},
         )
-        
+
         if result.modified_count > 0 or result.matched_count > 0:
             return await self.get_email_setting_by_id(email_setting_id, user_id)
         return None
@@ -93,16 +96,15 @@ class UserEmailSettingsRepository:
         """Set a specific email setting as active (deactivates all others)"""
         # Deactivate all settings for this user
         await self.collection.update_many(
-            {"user_id": ObjectId(user_id)},
-            {"$set": {"is_active": False}}
+            {"user_id": ObjectId(user_id)}, {"$set": {"is_active": False}}
         )
-        
+
         # Activate the specified setting
         result = await self.collection.update_one(
             {"_id": ObjectId(email_setting_id), "user_id": ObjectId(user_id)},
             {"$set": {"is_active": True}},
         )
-        
+
         if result.modified_count > 0 or result.matched_count > 0:
             return await self.get_email_setting_by_id(email_setting_id, user_id)
         return None

@@ -7,6 +7,7 @@ from app.schemas.common import BaseResponseSchema
 from app.schemas.job_skill import JobSkillResponse
 from app.schemas.job_status import JobStatusResponse
 
+
 class JobApplicationSchema(BaseModel):
     position: str
     company_name: str
@@ -24,9 +25,9 @@ class JobApplicationSchema(BaseModel):
     contact_mail: Optional[EmailStr] = None
     job_posted_date: Optional[date] = None
     job_closed_date: Optional[date] = None
-    application_through: Literal["email", "website", "referral", "other", "linkedin"] = Field(
-        default="email", description="Medium of application"
-    )
+    application_through: Literal[
+        "email", "website", "referral", "other", "linkedin"
+    ] = Field(default="email", description="Medium of application")
     application_url: Optional[HttpUrl] = Field(
         None, description="URL to apply or reference link"
     )
