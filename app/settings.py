@@ -1,5 +1,5 @@
 from pydantic_settings import BaseSettings
-
+import os
 
 class Settings(BaseSettings):
     MONGO_USER_NAME: str
@@ -7,6 +7,9 @@ class Settings(BaseSettings):
     MONGO_CLUSTER: str
     MONGO_APP_NAME: str
     MONGO_DATABASE: str
+
+    BASE_DIR: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    COMPANY_NAME:str = "Job Haunt"
 
     # CORS settings
     CORS_ORIGINS: str = "*"

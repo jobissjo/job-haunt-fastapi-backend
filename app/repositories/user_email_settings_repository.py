@@ -1,7 +1,7 @@
 from bson import ObjectId
 
 from app.database import db
-from app.schemas.user_mail_settings import EmailSettings, EmailSettingsUpdate
+from app.schemas.user_mail_settings import EmailSettings, EmailSettingsUpdate, EmailSettingsResponse
 
 
 class UserEmailSettingsRepository:
@@ -48,14 +48,15 @@ class UserEmailSettingsRepository:
             email_setting["user_id"] = str(email_setting["user_id"])
         return email_setting
 
-    async def get_active_email_setting(self, user_id: str) -> dict | None:
+    async def get_active_email_setting(self, user_id: str) -> EmailSettingsResponse | None:
         """Get the active email setting for a user"""
         email_setting = await self.collection.find_one(
             {"user_id": ObjectId(user_id), "is_active": True}
         )
-        if email_setting:
-            email_setting["_id"] = str(email_setting["_id"])
-            email_setting["user_id"] = str(email_setting["user_id"])
+        if not email_setting:
+            return None
+        email_setting["_id"] = str(email_setting["_id"])
+        email_setting["user_id"] = str(email_setting["user_id"])
         return email_setting
 
     async def update_email_setting(

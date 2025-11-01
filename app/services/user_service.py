@@ -7,12 +7,14 @@ from app.schemas.user import (
     RegisterUserSchema,
     UpdateUserPasswordSchema,
     UpdateUserProfileSchema,
-    UserDetailResponse,
     UserListResponse,
     UserTokenDecodedData,
 )
 from app.services.cloudinary import CloudinaryService
 from app.services.common import CommonService
+from app.repositories.user_email_settings_repository import UserEmailSettingsRepository
+from app.utils.email_utils import EmailUtils
+from datetime import datetime
 
 
 class UserService:
@@ -141,3 +143,19 @@ class UserService:
             "message": "Cover picture updated successfully",
             "data": {"cover_picture": cover_picture_url_info["url"]},
         }
+
+    async def test_mail(self, to_email: str, user_data: UserTokenDecodedData):
+        email_setting = await UserEmailSettingsRepository().get_active_email_setting(
+            user_data.id
+        )
+        if not email_setting:
+            raise HTTPException(status_code=404, detail="Email setting not found")
+        print(email_setting, "email_setting")
+        return await EmailUtils.send_mail(
+            user_data.id,
+            email_setting,
+            to_email,
+            "Test Mail",
+            "test_mail.html",
+            {"current_year": datetime.now().year},
+        )

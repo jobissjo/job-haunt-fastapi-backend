@@ -14,6 +14,7 @@ class BaseUserSchema(BaseModel):
     username: str = Field(..., alias="username")
     password: str = Field(..., alias="password")
     role: str = Field(..., alias="role")
+    dark_mode: Optional[bool] = Field(default=False)
 
     model_config = ConfigDict(populate_by_name=True)
 
@@ -44,6 +45,7 @@ class NotificationPreference(BaseModel):
 
 class UserSchemaResponse(BaseUserSchema):
     id: str = Field(default_factory=str, alias="_id")
+    
     # password = Field(exclude=True)
     # profile: Profile = Field(..., alias="profile")
     # social_links: Optional[str] = None
@@ -51,14 +53,14 @@ class UserSchemaResponse(BaseUserSchema):
 
 
 class UpdateUserProfileSchema(BaseUserSchema):
-    social_links: SocialLinksSchema
-    profile: Profile
+    social_links: Optional[SocialLinksSchema] = None
+    profile: Optional[Profile] = None
 
 
 class UserResponseSchema(BaseUserSchema):
     id: str = Field(default_factory=str, alias="_id")
     profile: Profile = Field(..., alias="profile")
-    social_links: Optional[str] = None
+    social_links: Optional[SocialLinksSchema] = None
     model_config = ConfigDict(populate_by_name=True)
 
 

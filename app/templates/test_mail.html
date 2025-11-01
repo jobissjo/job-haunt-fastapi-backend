@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Email</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f7f9fc;
+        margin: 0;
+        padding: 0;
+      }
+      .email-container {
+        max-width: 600px;
+        margin: 40px auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+      }
+      .header {
+        background-color: #2563eb;
+        color: #ffffff;
+        text-align: center;
+        padding: 20px 0;
+        font-size: 22px;
+        font-weight: 600;
+      }
+      .content {
+        padding: 30px;
+        text-align: center;
+        color: #374151;
+      }
+      .content p {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+      }
+      .footer {
+        background-color: #f3f4f6;
+        text-align: center;
+        padding: 15px;
+        font-size: 13px;
+        color: #6b7280;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <div class="header">
+        Test Email
+      </div>
+      <div class="content">
+        <p>👋 Hello,</p>
+        <p>
+          This is a <strong>test email</strong> sent from our system.<br />
+          Please ignore this message — it’s only for testing purposes.
+        </p>
+        <p>Thank you for your time!</p>
+      </div>
+      <div class="footer">
+        © {{ current_year }} {{company_name}}. All rights reserved.
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, File, UploadFile
+from fastapi import APIRouter, Depends, File, UploadFile, BackgroundTasks
 
 from app.repositories.user_repository import UserRepository
 from app.schemas.common import BaseResponseSchema
@@ -13,6 +13,7 @@ from app.schemas.user import (
 )
 from app.services.common import CommonService
 from app.services.user_service import UserService
+from app.schemas.email_log import TestEmailSchema
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -87,3 +88,14 @@ async def update_user_cover_picture(
     user_data: UserTokenDecodedData = Depends(CommonService.verify_token_get_user),
 ):
     return await service.update_user_cover_picture(user_data.id, cover_picture)
+
+
+@router.post('/test-mail/')
+async def test_mail(
+    test_email_data: TestEmailSchema,
+    background_tasks: BackgroundTasks,
+    service: UserService = Depends(UserService),
+    user_data: UserTokenDecodedData = Depends(CommonService.verify_token_get_user),
+) -> BaseResponseSchema:
+    background_tasks.add_task(service.test_mail, test_email_data.to_mail, user_data)
+    return {"success": True, "message": "Email sent successfully"}
