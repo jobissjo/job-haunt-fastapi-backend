@@ -92,3 +92,6 @@ class TokenResponseSchema(BaseModel):
     access_token: str
     refresh_token: str
     user: UserSchemaResponse
+
+class TokenDetailResponseSchema(BaseResponseSchema):
+    data: TokenResponseSchema

@@ -5,7 +5,7 @@ from app.schemas.common import BaseResponseSchema
 from app.schemas.user import (
     LoginUserSchema,
     RegisterUserSchema,
-    TokenResponseSchema,
+    TokenDetailResponseSchema,
     UpdateUserPasswordSchema,
     UpdateUserProfileSchema,
     UserListResponse,
@@ -32,7 +32,7 @@ async def get_users(service: UserService = Depends(UserService)) -> UserListResp
 @router.post("/login/")
 async def login_user(
     user: LoginUserSchema, service: UserService = Depends(UserService)
-) -> TokenResponseSchema:
+) -> TokenDetailResponseSchema:
     return await service.login_user(user)
 
 
