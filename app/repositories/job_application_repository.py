@@ -90,10 +90,11 @@ class JobApplicationRepository:
 
         return documents
 
-    async def get_job_application_by_id(self, job_application_id: str) -> JobApplicationResponse | None:
+    async def get_job_application_by_id(
+        self, job_application_id: str
+    ) -> JobApplicationResponse | None:
         pipeline = [
             {"$match": {"_id": ObjectId(job_application_id)}},
-
             # Lookup for status
             {
                 "$lookup": {
@@ -104,7 +105,6 @@ class JobApplicationRepository:
                 }
             },
             {"$unwind": {"path": "$status_detail", "preserveNullAndEmptyArrays": True}},
-
             # Lookup for skills
             {
                 "$lookup": {
@@ -114,7 +114,6 @@ class JobApplicationRepository:
                     "as": "skills_detail",
                 }
             },
-
             # Lookup for preferred skills
             {
                 "$lookup": {
@@ -164,11 +163,19 @@ class JobApplicationRepository:
     async def update_job_application(
         self, job_application_id: str, job_application: JobApplicationSchema
     ):
-        job_application_response = await self.collection.update_one(
-            {"_id": ObjectId(job_application_id)}, {"$set": job_application}
+        await self.collection.update_one(
+            {"_id": ObjectId(job_application_id)},
+            {
+                "$set": {
+                    **job_application.model_dump(),
+                    "skills": [ObjectId(skill) for skill in job_application.skills],
+                    "preferred_skills": [
+                        ObjectId(skill) for skill in job_application.preferred_skills
+                    ],
+                    "application_url": str(job_application.application_url),
+                }
+            },
         )
-        job_application_response["_id"] = str(job_application_response["_id"])
-        return job_application_response
 
     async def delete_job_application(self, job_application_id: str):
         return await self.collection.delete_one({"_id": ObjectId(job_application_id)})

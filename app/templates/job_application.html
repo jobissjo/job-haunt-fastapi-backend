@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Application</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f6f8;
+        margin: 0;
+        padding: 0;
+        color: #333;
+      }
+      .container {
+        max-width: 600px;
+        margin: 40px auto;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+      }
+      .header {
+        background: #2563eb;
+        color: #ffffff;
+        text-align: center;
+        padding: 24px 16px;
+        font-size: 20px;
+        font-weight: 600;
+      }
+      .content {
+        padding: 30px;
+        line-height: 1.6;
+      }
+      .content h2 {
+        color: #111827;
+        font-size: 18px;
+        margin-bottom: 8px;
+      }
+      .content p {
+        margin: 6px 0;
+      }
+      .skills {
+        margin-top: 10px;
+      }
+      .skill {
+        display: inline-block;
+        background: #e5e7eb;
+        color: #1f2937;
+        border-radius: 20px;
+        padding: 5px 12px;
+        margin: 3px;
+        font-size: 13px;
+        font-weight: 500;
+      }
+      .footer {
+        background: #f3f4f6;
+        text-align: center;
+        padding: 15px;
+        font-size: 13px;
+        color: #6b7280;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        Job Application for {{ position }}
+      </div>
+
+      <div class="content">
+        <h2>Dear {{ company_name }} Team,</h2>
+
+        <p>
+          I am <strong>{{ first_name }} {{ last_name }}</strong>, and I would like
+          to apply for the <strong>{{ position }}</strong> role at
+          <strong>{{ company_name }}</strong>.
+        </p>
+
+        <p>
+          I have <strong>{{ experience }} years</strong> of experience and
+          believe my skills would be a great fit for your team.
+        </p>
+
+        <div class="skills">
+          <strong>Key Skills:</strong><br />
+          {% for skill in skills %}
+            <span class="skill">{{ skill }}</span>
+          {% endfor %}
+        </div>
+
+        <p style="margin-top: 20px;">
+          Thank you for considering my application.<br />
+          I look forward to hearing from you.
+        </p>
+
+        <p>Best regards,<br /><strong>{{ first_name }} {{ last_name }}</strong></p>
+      </div>
+
+      
+    </div>
+  </body>
+</html>

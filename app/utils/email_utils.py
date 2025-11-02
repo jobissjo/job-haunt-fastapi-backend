@@ -33,7 +33,7 @@ class EmailUtils:
             # 3️⃣ Create the email message
             message = EmailMessage()
             message["Subject"] = subject
-            message["From"] = email_setting.get("from_email")
+            message["From"] = email_setting.from_email
             message["To"] = to_email
             message.set_content("Your email client does not support HTML.")
             message.add_alternative(html_content, subtype="html")
@@ -41,10 +41,10 @@ class EmailUtils:
             # 4️⃣ Send asynchronously
             await aiosmtplib.send(
                 message,
-                hostname=email_setting.get("host"),
-                port=email_setting.get("port"),
-                username=email_setting.get("username"),
-                password=email_setting.get("password"),
+                hostname=email_setting.host,
+                port=email_setting.port,
+                username=email_setting.username,
+                password=email_setting.password,
                 start_tls=True, 
             )
 

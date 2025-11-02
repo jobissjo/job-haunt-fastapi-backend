@@ -66,5 +66,5 @@ async def manual_job_application_mail_trigger(
     user_data: UserTokenDecodedData = Depends(CommonService.verify_token_get_user),
     service: JobApplicationService = Depends(JobApplicationService),
 )->BaseResponseSchema:
-    background_tasks.add_task(service.manual_job_application_mail_trigger, job_application_id, user_data.id)
+    background_tasks.add_task(service.manual_job_application_mail_trigger, job_application_id, user_data)
     return {"success": True, "message": "Job application mail triggered successfully"}

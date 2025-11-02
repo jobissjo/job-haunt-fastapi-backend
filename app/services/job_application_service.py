@@ -13,6 +13,7 @@ from app.services.common import CommonService
 from app.utils.email_utils import EmailUtils
 from app.repositories.user_email_settings_repository import UserEmailSettingsRepository
 from fastapi import HTTPException
+from app.schemas.user import UserTokenDecodedData
 
 class JobApplicationService:
     def __init__(self):
@@ -20,6 +21,7 @@ class JobApplicationService:
         self.job_application_automation_repository = (
             JobApplicationAutomationRepository()
         )
+        self.user_email_settings_repository = UserEmailSettingsRepository()
 
     async def create_job_application(
         self, job_application: JobApplicationSchema, user_id: str
@@ -63,6 +65,15 @@ class JobApplicationService:
     async def update_job_application(
         self, job_application_id: str, job_application: JobApplicationSchema
     ) -> BaseResponseSchema:
+        job_application.applied_date = await CommonService.to_datetime(
+            job_application.applied_date
+        )
+        job_application.job_posted_date = await CommonService.to_datetime(
+            job_application.job_posted_date
+        )
+        job_application.job_closed_date = await CommonService.to_datetime(
+            job_application.job_closed_date
+        )
         await self.repository.update_job_application(
             job_application_id, job_application
         )
@@ -84,11 +95,11 @@ class JobApplicationService:
             "data": {"_id": str(job_application_automation_id)},
         }
 
-    async def manual_job_application_mail_trigger(self, job_application_id: str, user_id: str)->None:
+    async def manual_job_application_mail_trigger(self, job_application_id: str, user_data: UserTokenDecodedData)->None:
         job_application = await self.repository.get_job_application_by_id(job_application_id)
         if not job_application:
             raise HTTPException(status_code=404, detail="Job application not found")
-        email_setting = await UserEmailSettingsRepository.get_active_email_setting(user_id)
+        email_setting = await self.user_email_settings_repository.get_active_email_setting(user_data.id)
         if not email_setting:
             raise HTTPException(status_code=404, detail="Email setting not found")
         if not job_application.contact_mail:
@@ -96,12 +107,15 @@ class JobApplicationService:
         if job_application.application_through not in {'email'}:
             raise HTTPException(status_code=404, detail="Job application not through email, so not able to send mail") 
         await EmailUtils.send_mail(
-            user_id=user_id,
+            user_id=user_data.id,
             email_setting=email_setting,
             to_email=job_application.contact_mail,
             subject=job_application.position,
             template_name="job_application.html",
-            template_data=job_application.model_dump(),
+            template_data={
+                **job_application.model_dump(),
+
+            },
             job_application_id=job_application_id,
         )
         
