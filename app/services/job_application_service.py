@@ -10,7 +10,9 @@ from app.schemas.job_application import (
 )
 from app.schemas.job_application_automation import JobApplicationAutomationSchema
 from app.services.common import CommonService
-
+from app.utils.email_utils import EmailUtils
+from app.repositories.user_email_settings_repository import UserEmailSettingsRepository
+from fastapi import HTTPException
 
 class JobApplicationService:
     def __init__(self):
@@ -81,3 +83,26 @@ class JobApplicationService:
             "message": "Job application automation created successfully",
             "data": {"_id": str(job_application_automation_id)},
         }
+
+    async def manual_job_application_mail_trigger(self, job_application_id: str, user_id: str)->None:
+        job_application = await self.repository.get_job_application_by_id(job_application_id)
+        if not job_application:
+            raise HTTPException(status_code=404, detail="Job application not found")
+        email_setting = await UserEmailSettingsRepository.get_active_email_setting(user_id)
+        if not email_setting:
+            raise HTTPException(status_code=404, detail="Email setting not found")
+        if not job_application.contact_mail:
+            raise HTTPException(status_code=404, detail="Contact mail not found in job application")
+        if job_application.application_through not in {'email'}:
+            raise HTTPException(status_code=404, detail="Job application not through email, so not able to send mail") 
+        await EmailUtils.send_mail(
+            user_id=user_id,
+            email_setting=email_setting,
+            to_email=job_application.contact_mail,
+            subject=job_application.position,
+            template_name="job_application.html",
+            template_data=job_application.model_dump(),
+            job_application_id=job_application_id,
+        )
+        
+    

@@ -15,4 +15,5 @@ dependencies = [
     "pyjwt>=2.10.1",
     "pymongo>=4.15.3",
     "ruff[format]>=0.14.2",
+    "rusty-logger>=0.3.0",
 ]

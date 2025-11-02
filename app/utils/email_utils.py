@@ -16,6 +16,7 @@ class EmailUtils:
         subject: str,
         template_name: str,
         template_data: Optional[Dict] = None,
+        job_application_id: Optional[str] = None,
     ):
         try:
             # 1️⃣ Load the Jinja2 environment

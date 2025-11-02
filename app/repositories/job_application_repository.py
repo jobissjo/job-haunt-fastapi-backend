@@ -1,7 +1,7 @@
 from bson import ObjectId
 
 from app.database import db
-from app.schemas.job_application import JobApplicationSchema
+from app.schemas.job_application import JobApplicationSchema, JobApplicationResponse
 
 
 class JobApplicationRepository:
@@ -90,12 +90,76 @@ class JobApplicationRepository:
 
         return documents
 
-    async def get_job_application_by_id(self, job_application_id: str):
-        job_application_response = await self.collection.find_one(
-            {"_id": ObjectId(job_application_id)}
-        )
-        job_application_response["_id"] = str(job_application_response["_id"])
-        return job_application_response
+    async def get_job_application_by_id(self, job_application_id: str) -> JobApplicationResponse | None:
+        pipeline = [
+            {"$match": {"_id": ObjectId(job_application_id)}},
+
+            # Lookup for status
+            {
+                "$lookup": {
+                    "from": "job_status",
+                    "localField": "status",
+                    "foreignField": "_id",
+                    "as": "status_detail",
+                }
+            },
+            {"$unwind": {"path": "$status_detail", "preserveNullAndEmptyArrays": True}},
+
+            # Lookup for skills
+            {
+                "$lookup": {
+                    "from": "job_skills",
+                    "localField": "skills",
+                    "foreignField": "_id",
+                    "as": "skills_detail",
+                }
+            },
+
+            # Lookup for preferred skills
+            {
+                "$lookup": {
+                    "from": "job_skills",
+                    "localField": "preferred_skills",
+                    "foreignField": "_id",
+                    "as": "preferred_skills_detail",
+                }
+            },
+        ]
+
+        cursor = await self.collection.aggregate(pipeline)
+        job_application = await cursor.to_list(length=1)
+
+        if not job_application:
+            return None
+
+        doc = job_application[0]
+
+        # Convert ObjectIds to strings
+        doc["_id"] = str(doc["_id"])
+        doc["user_id"] = str(doc["user_id"])
+
+        if "status" in doc and isinstance(doc["status"], ObjectId):
+            doc["status"] = str(doc["status"])
+
+        if "skills" in doc:
+            doc["skills"] = [str(s) for s in doc["skills"]]
+
+        if "preferred_skills" in doc:
+            doc["preferred_skills"] = [str(s) for s in doc["preferred_skills"]]
+
+        # Convert nested details
+        if "status_detail" in doc and doc["status_detail"]:
+            doc["status_detail"]["_id"] = str(doc["status_detail"]["_id"])
+
+        if "skills_detail" in doc:
+            for s in doc["skills_detail"]:
+                s["_id"] = str(s["_id"])
+
+        if "preferred_skills_detail" in doc:
+            for s in doc["preferred_skills_detail"]:
+                s["_id"] = str(s["_id"])
+
+        return JobApplicationResponse(**doc)
 
     async def update_job_application(
         self, job_application_id: str, job_application: JobApplicationSchema

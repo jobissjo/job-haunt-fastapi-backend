@@ -359,6 +359,7 @@ dependencies = [
     { name = "pyjwt" },
     { name = "pymongo" },
     { name = "ruff" },
+    { name = "rusty-logger" },
 ]
 
 [package.metadata]
@@ -373,6 +374,7 @@ requires-dist = [
     { name = "pyjwt", specifier = ">=2.10.1" },
     { name = "pymongo", specifier = ">=4.15.3" },
     { name = "ruff", extras = ["format"], specifier = ">=0.14.2" },
+    { name = "rusty-logger", specifier = ">=0.3.0" },
 ]
 
 [[package]]
@@ -870,6 +872,37 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/8d/35/3654a973ebe5b32e1fd4a08ed2d46755af7267da7ac710d97420d7b8657d/ruff-0.14.2-py3-none-win32.whl", hash = "sha256:41775927d287685e08f48d8eb3f765625ab0b7042cc9377e20e64f4eb0056ee9", size = 12415318 },
     { url = "https://files.pythonhosted.org/packages/71/30/3758bcf9e0b6a4193a6f51abf84254aba00887dfa8c20aba18aa366c5f57/ruff-0.14.2-py3-none-win_amd64.whl", hash = "sha256:0df3424aa5c3c08b34ed8ce099df1021e3adaca6e90229273496b839e5a7e1af", size = 13565279 },
     { url = "https://files.pythonhosted.org/packages/2e/5d/aa883766f8ef9ffbe6aa24f7192fb71632f31a30e77eb39aa2b0dc4290ac/ruff-0.14.2-py3-none-win_arm64.whl", hash = "sha256:ea9d635e83ba21569fbacda7e78afbfeb94911c9434aff06192d9bc23fd5495a", size = 12554956 },
+]
+
+[[package]]
+name = "rusty-logger"
+version = "0.3.0"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/4e/17/0d13573fd95a9cfcf87a043c499636abb2a7fbf30991a10aef1dfd5248b4/rusty_logger-0.3.0-cp311-cp311-macosx_10_12_x86_64.whl", hash = "sha256:f03448872a882da91f8df237e0726357567ca99225a305f6af57042b5bd843da", size = 926283 },
+    { url = "https://files.pythonhosted.org/packages/b0/95/d327e73130da44d8b68ff2fcd8d2e8b4ec6fcca72df76542fdf952549699/rusty_logger-0.3.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:c57e1081adcec425d3875447a0e48a50e248267caffb0ad31b0f154c160b3305", size = 872391 },
+    { url = "https://files.pythonhosted.org/packages/aa/d5/d3ad5fb935980550fa82ee3cdb0b73c747371dde7b7202f85b865c935c8b/rusty_logger-0.3.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:2823ae4f66d03f56a2d77aebc795c628fd0ed6e4469ab8e384ff436815d7bcc1", size = 924354 },
+    { url = "https://files.pythonhosted.org/packages/47/5d/1b08ded78f23c3d1d53899ab30f104fb1942fcb5753dbc8d8acf28ed2077/rusty_logger-0.3.0-cp311-cp311-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:711a611bae82946d9054db473e6aff3ae5f5d06f512ea2e8b41edc81c82f023b", size = 906607 },
+    { url = "https://files.pythonhosted.org/packages/6d/9f/76ad8612f63a833fe907d23e1e705363ff8d3fd15d7921a7afccd9eb2fea/rusty_logger-0.3.0-cp311-cp311-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:8ec7eb3a51688394b508d5b7c10de663117c92b195349e6c2da1952c30301ba0", size = 1015859 },
+    { url = "https://files.pythonhosted.org/packages/0b/6b/cd3d019a10561881e4e38bc19fd45acb03c0c2cd2a5091d8f780ec3c9d7d/rusty_logger-0.3.0-cp311-cp311-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:84f6739026386614c84cfe7f9d51b7d06d20fdfb68be2e537f80012386c58b78", size = 1461912 },
+    { url = "https://files.pythonhosted.org/packages/ef/19/a736252c4a767d228922e557663a2426c54eaeb95341362091bf5fba3c95/rusty_logger-0.3.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:5b12679a75c51769ab8c5d5adac37391b218bfd13752ffe9fb955a49530f86ac", size = 992528 },
+    { url = "https://files.pythonhosted.org/packages/ca/4e/1b11694336e70a59cfb89bd32fb367d455b246ec75f659073e23fd662f7b/rusty_logger-0.3.0-cp311-cp311-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:80e3ac275688ff5cb9d026dc08e5b79cd5935600659337e253ba2dc29faf3a92", size = 996318 },
+    { url = "https://files.pythonhosted.org/packages/f6/e4/1919150a2e63d2a659249d5b1b75127da8d47d72198be7a3d52ebec5785a/rusty_logger-0.3.0-cp311-cp311-musllinux_1_1_aarch64.whl", hash = "sha256:276614b048f60a7a01848315879aaa45e0fd8b692658f9e5ebd208d9c07f5178", size = 1109387 },
+    { url = "https://files.pythonhosted.org/packages/7a/de/da2cb20ea47505b0e63da5662e146c34717c70fdc79c09b9ac6f2d71f0fa/rusty_logger-0.3.0-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:47204a5a62789a8b1ce43c8be166b48bf339e5b62df55d7ed07dd71ee7c8c7c6", size = 1168325 },
+    { url = "https://files.pythonhosted.org/packages/25/82/8ebde41a5365e0ada931354cf9115b6cebed9bd6656b6cb24f949be6e1a6/rusty_logger-0.3.0-cp311-none-win32.whl", hash = "sha256:10c6cf9c3ec82a21e79a51024abaf41c975ab5092734670b3d261381a463b446", size = 860766 },
+    { url = "https://files.pythonhosted.org/packages/ca/d8/824d3bdf6b66762631fe8759f7fc0ef4aa521628793614a3a6b769bc3306/rusty_logger-0.3.0-cp311-none-win_amd64.whl", hash = "sha256:2ef4161ce41b6e49e8661470418a7f2f2ef6bb755723e1adb4b46bd16e52494f", size = 938093 },
+    { url = "https://files.pythonhosted.org/packages/93/f9/45d39b58ad73f28573ddcf99a62160d0b04d6a7c14c5eb64bf9367cf701c/rusty_logger-0.3.0-cp312-cp312-macosx_10_12_x86_64.whl", hash = "sha256:b5f3810a752227885079088de1a7738afca93f051aded1bdbdf9d49ff2d5fe77", size = 924962 },
+    { url = "https://files.pythonhosted.org/packages/64/0f/402bbb5c27381876acd83da8661ecd5b070ce6aaa293de36750b3e2e1400/rusty_logger-0.3.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:a938520225e7304560c1c585bdea096664a587d8d2f92584a38b1ce5b19f3c35", size = 871886 },
+    { url = "https://files.pythonhosted.org/packages/1a/bf/534203a7c9ee70dfeea4a8a5e7feccad374f0d92d1843d0341b9b75cb31d/rusty_logger-0.3.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:4ac8e7e3687325e91da5846a81baed5750b2fe3fb129ed575ddeeafbe027d744", size = 920785 },
+    { url = "https://files.pythonhosted.org/packages/34/68/4238f803980a80319ea2111ff57e626bc4f5aa0bc42917f3f62534d842cf/rusty_logger-0.3.0-cp312-cp312-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:2ed3609b49aa0c8834ef47bde530ca72352de7dd8dccbbb4b2055fec6678e891", size = 902705 },
+    { url = "https://files.pythonhosted.org/packages/85/03/757a9ce5daaf4c98697928047d442f502909d885524be64223d2f9749612/rusty_logger-0.3.0-cp312-cp312-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:ecb011c5911a5bc50ca206967c03191a34a8e6bfead0badc738c74a51733acaa", size = 1011202 },
+    { url = "https://files.pythonhosted.org/packages/03/1f/1533a18f31c97774c3b4d5e1392ab6a0350ceab02f7638e4324a7fd8a09d/rusty_logger-0.3.0-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:3473c5a6949d210e2dafb5ddd67927c05e858f3a2a9b3fffb3b30769cb86e0ee", size = 1306179 },
+    { url = "https://files.pythonhosted.org/packages/12/c1/dfc585e681da0149fbaf2f28214110c9a4855fe461702a5d3457a360945c/rusty_logger-0.3.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7b34ade87868069931dac2eb88c2c41361ae5ff1afebedd9253eed3a924939af", size = 988154 },
+    { url = "https://files.pythonhosted.org/packages/61/96/9062088410265c5bd32e08c5e51a347fc06c29ed6377f7ba1ab30d6bc47e/rusty_logger-0.3.0-cp312-cp312-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:c5d016b2590c2d3e9ac6e1e533b5d3c2f58355b9a33c0bb1c127ab68928d6b11", size = 992961 },
+    { url = "https://files.pythonhosted.org/packages/06/43/1d05fb55458a72511dea67fd3132aabe42480f9710cdb4b51ce244501057/rusty_logger-0.3.0-cp312-cp312-musllinux_1_1_aarch64.whl", hash = "sha256:2c76146c50d775ee9b5efa0777625bea50a7adf8ef7b74175a58de348b58a39d", size = 1109012 },
+    { url = "https://files.pythonhosted.org/packages/c7/32/0b03db35d3baa14d8921e1e7a30c7896eb2654b6b6d329de933a20ed9883/rusty_logger-0.3.0-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:49b072397ab039fadfe471c2b32005f5eda65bdc904459ff881a5e774c7686ca", size = 1167618 },
+    { url = "https://files.pythonhosted.org/packages/f9/23/25cff6b170c5dcf9fead06717c41013b8da14d190bd644756515af8f6b79/rusty_logger-0.3.0-cp312-none-win32.whl", hash = "sha256:c4d6dd892fa8b0cab8cffb622806c1c808d93531920226326207269c45422a7e", size = 853715 },
+    { url = "https://files.pythonhosted.org/packages/52/b1/f09e56dce6603a9faef744baa1cc232390cbfc9165cc80f49efd8f3563a2/rusty_logger-0.3.0-cp312-none-win_amd64.whl", hash = "sha256:9ee59fb631c0e605f2616abb10bf808ea50ca41c76694909d6a632195e107d6a", size = 934142 },
 ]
 
 [[package]]

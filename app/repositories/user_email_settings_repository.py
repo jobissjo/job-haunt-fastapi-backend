@@ -57,7 +57,7 @@ class UserEmailSettingsRepository:
             return None
         email_setting["_id"] = str(email_setting["_id"])
         email_setting["user_id"] = str(email_setting["user_id"])
-        return email_setting
+        return EmailSettingsResponse(**email_setting)
 
     async def update_email_setting(
         self, email_setting_id: str, user_id: str, email_setting: EmailSettingsUpdate

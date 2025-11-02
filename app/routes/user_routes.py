@@ -5,6 +5,7 @@ from app.schemas.common import BaseResponseSchema
 from app.schemas.user import (
     LoginUserSchema,
     RegisterUserSchema,
+    TokenResponseSchema,
     TokenDetailResponseSchema,
     UpdateUserPasswordSchema,
     UpdateUserProfileSchema,
@@ -14,6 +15,7 @@ from app.schemas.user import (
 from app.services.common import CommonService
 from app.services.user_service import UserService
 from app.schemas.email_log import TestEmailSchema
+from fastapi.security import OAuth2PasswordRequestForm
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -35,6 +37,15 @@ async def login_user(
     user: LoginUserSchema, service: UserService = Depends(UserService)
 ) -> TokenDetailResponseSchema:
     return await service.login_user(user)
+
+@router.post("/token/")
+async def get_token(
+    data: OAuth2PasswordRequestForm = Depends(),
+    service: UserService = Depends(UserService)
+) -> TokenResponseSchema:
+    user = LoginUserSchema(username=data.username, password=data.password)
+    token_data = await service.login_user(user)
+    return token_data.get('data')
 
 
 @router.get("/me/")
