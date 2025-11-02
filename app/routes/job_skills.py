@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, File, UploadFile
 
 from app.schemas.job_skill import JobSkillSchema
 from app.services.job_skills_service import JobSkillService
@@ -24,6 +24,12 @@ async def create_job_skill(
 ):
     return await service.create_job_skill(job_skill)
 
+@router.post("/bulk-upload")
+async def bulk_upload_job_skills(
+    file: UploadFile = File(...), 
+    service: JobSkillService = Depends(JobSkillService)
+):
+    return await service.bulk_upload_job_skills(file)
 
 @router.put("/{job_skill_id}")
 async def update_job_skill(

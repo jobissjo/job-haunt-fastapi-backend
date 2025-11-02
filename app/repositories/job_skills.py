@@ -35,3 +35,10 @@ class JobSkillRepository:
 
     async def delete_job_skill(self, job_skill_id):
         return await self.collection.delete_one({"_id": ObjectId(job_skill_id)})
+    
+    async def get_existing_skill_names(self, names: list[str]):
+        cursor = self.collection.find({"name": {"$in": names}}, {"name": 1})
+        return await cursor.to_list(None)
+    
+    async def bulk_create_job_skills(self, job_skills: list[JobSkillSchema]):
+        return await self.collection.insert_many([job_skill.model_dump() for job_skill in job_skills])
