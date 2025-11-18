@@ -15,6 +15,7 @@ from .user_routes import router as user_router
 from .user_skills import router as user_skills_router
 from .resource_note import router as resource_note_router
 from .resource_todo import router as resource_todo_router
+from .activity_log import router as activity_log_router
 
 router = APIRouter()
 router.include_router(user_router)
@@ -32,3 +33,4 @@ router.include_router(job_preference_router)
 router.include_router(kanban_board_router)
 router.include_router(resource_note_router)
 router.include_router(resource_todo_router)
+router.include_router(activity_log_router)

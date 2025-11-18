@@ -21,10 +21,12 @@ class JobSkillRepository:
     async def get_job_skills_count(self):
         return await self.collection.count_documents({})
 
-    async def get_job_skill_by_id(self, job_skill_id) -> JobSkillResponse:
+    async def get_job_skill_by_id(self, job_skill_id) -> JobSkillResponse | None:
         job_skill_response = await self.collection.find_one(
             {"_id": ObjectId(job_skill_id)}
         )
+        if not job_skill_response:
+            return job_skill_response
         job_skill_response["_id"] = str(job_skill_response["_id"])
         return job_skill_response
 
