@@ -117,18 +117,17 @@ class JobApplicationService:
         )
         return {"success": True, "message": "Job application updated successfully"}
 
-    async def delete_job_application(self, job_application_id) -> BaseResponseSchema:
-        job_application = await self.repository.get_job_application_by_id(job_application_id)
+    async def delete_job_application(self, job_application_id, user_id) -> BaseResponseSchema:
+        job_application = await self.repository.get_job_application_by_id(job_application_id, user_id)
         job_application_name = job_application.position
         job_application_company_name = job_application.company_name
-        user_id = job_application.user_id
 
-        await self.repository.delete_job_application(job_application_id)
+        await self.repository.delete_job_application(job_application_id, user_id)
         await self.activity_log_repository.create_activity_log(
             user_id,
             ActivityLogSchema(
                 type="Job Application",
-                message=f"Job Application deleted successfully for {job_application_name} in {job_application.company_name}"
+                message=f"Job Application deleted successfully for {job_application_name} in {job_application_company_name}"
             ),
         )
         return {"success": True, "message": "Job application deleted successfully"}

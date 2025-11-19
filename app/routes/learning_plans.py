@@ -23,9 +23,10 @@ async def get_learning_plans(
 
 @router.get("/{learning_plan_id}")
 async def get_learning_plan_by_id(
-    learning_plan_id: str, service: LearningPlanService = Depends(LearningPlanService)
+    learning_plan_id: str, service: LearningPlanService = Depends(LearningPlanService),
+    user_data: UserTokenDecodedData = Depends(CommonService.verify_token_get_user),
 ) -> LearningPlanDetailResponse:
-    return await service.get_learning_plan_by_id(learning_plan_id)
+    return await service.get_learning_plan_by_id(learning_plan_id, user_data.id)
 
 
 @router.post("/")
@@ -42,12 +43,15 @@ async def update_learning_plan(
     learning_plan_id: str,
     learning_plan: LearningPlanSchema,
     service: LearningPlanService = Depends(LearningPlanService),
+    user_data: UserTokenDecodedData = Depends(CommonService.verify_token_get_user),
 ) -> BaseResponseSchema:
-    return await service.update_learning_plan(learning_plan_id, learning_plan)
+    return await service.update_learning_plan(learning_plan_id, learning_plan, user_data.id)
 
 
 @router.delete("/{learning_plan_id}")
 async def delete_learning_plan(
-    learning_plan_id: str, service: LearningPlanService = Depends(LearningPlanService)
+    learning_plan_id: str,
+    service: LearningPlanService = Depends(LearningPlanService),
+    user_data: UserTokenDecodedData = Depends(CommonService.verify_token_get_user),
 ) -> BaseResponseSchema:
-    return await service.delete_learning_plan(learning_plan_id)
+    return await service.delete_learning_plan(learning_plan_id, user_data.id)

@@ -69,3 +69,12 @@ async def manual_job_application_mail_trigger(
 )->BaseResponseSchema:
     background_tasks.add_task(service.manual_job_application_mail_trigger, job_application_id, user_data)
     return {"success": True, "message": "Job application mail triggered successfully"}
+
+
+@router.delete("/{job_application_id}")
+async def delete_job_application(
+    job_application_id: str,
+    user_data: UserTokenDecodedData = Depends(CommonService.verify_token_get_user),
+    service: JobApplicationService = Depends(JobApplicationService),
+)->BaseResponseSchema:
+    return await service.delete_job_application(job_application_id, user_data.id)

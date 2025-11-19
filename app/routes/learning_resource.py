@@ -44,9 +44,10 @@ async def update_learning_resource(
     learning_resource_id: str,
     learning_resource: LearningResource,
     service: LearningResourceService = Depends(LearningResourceService),
+    user_data: UserTokenDecodedData = Depends(CommonService.verify_token_get_user),
 ) -> BaseResponseSchema:
     return await service.update_learning_resource(
-        learning_resource_id, learning_resource
+        learning_resource_id, learning_resource, user_data.id
     )
 
 
@@ -54,5 +55,6 @@ async def update_learning_resource(
 async def delete_learning_resource(
     learning_resource_id: str,
     service: LearningResourceService = Depends(LearningResourceService),
+    user_data: UserTokenDecodedData = Depends(CommonService.verify_token_get_user),
 ) -> BaseResponseSchema:
-    return await service.delete_learning_resource(learning_resource_id)
+    return await service.delete_learning_resource(learning_resource_id, user_data.id)
