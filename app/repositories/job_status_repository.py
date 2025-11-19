@@ -21,10 +21,12 @@ class JobStatusRepository:
     async def get_job_status_count(self):
         return await self.collection.count_documents({})
 
-    async def get_job_status_by_id(self, job_status_id: str) -> JobStatusResponse:
+    async def get_job_status_by_id(self, job_status_id: str) -> JobStatusResponse | None:
         job_status_response = await self.collection.find_one(
             {"_id": ObjectId(job_status_id)}
         )
+        if not job_status_response:
+            return None
         job_status_response["_id"] = str(job_status_response["_id"])
         return job_status_response
 

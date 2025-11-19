@@ -91,10 +91,10 @@ class JobApplicationRepository:
         return documents
 
     async def get_job_application_by_id(
-        self, job_application_id: str
+        self, job_application_id: str, user_id: str
     ) -> JobApplicationResponse | None:
         pipeline = [
-            {"$match": {"_id": ObjectId(job_application_id)}},
+            {"$match": {"_id": ObjectId(job_application_id), "user_id": ObjectId(user_id)}},
             # Lookup for status
             {
                 "$lookup": {
@@ -148,6 +148,7 @@ class JobApplicationRepository:
 
         # Convert nested details
         if "status_detail" in doc and doc["status_detail"]:
+            print(doc["status_detail"])
             doc["status_detail"]["_id"] = str(doc["status_detail"]["_id"])
 
         if "skills_detail" in doc:
@@ -161,10 +162,11 @@ class JobApplicationRepository:
         return JobApplicationResponse(**doc)
 
     async def update_job_application(
-        self, job_application_id: str, job_application: JobApplicationSchema
+        self, job_application_id: str, job_application: JobApplicationSchema,
+        user_id: str
     ):
         await self.collection.update_one(
-            {"_id": ObjectId(job_application_id)},
+            {"_id": ObjectId(job_application_id), "user_id": ObjectId(user_id)},
             {
                 "$set": {
                     **job_application.model_dump(),
@@ -177,5 +179,5 @@ class JobApplicationRepository:
             },
         )
 
-    async def delete_job_application(self, job_application_id: str):
-        return await self.collection.delete_one({"_id": ObjectId(job_application_id)})
+    async def delete_job_application(self, job_application_id: str, user_id: str):
+        return await self.collection.delete_one({"_id": ObjectId(job_application_id), "user_id": ObjectId(user_id)})

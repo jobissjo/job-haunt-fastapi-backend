@@ -33,8 +33,9 @@ async def get_job_applications(
 @router.get("/{job_application_id}")
 async def get_job_application_by_id(job_application_id: str,
     service: JobApplicationService = Depends(JobApplicationService),
+    user_data: UserTokenDecodedData = Depends(CommonService.verify_token_get_user),
 ):
-    return await service.get_job_application_by_id(job_application_id)
+    return await service.get_job_application_by_id(job_application_id, user_data.id)
 
 
 @router.post("/automation")
@@ -56,7 +57,7 @@ async def update_job_application(
     
 ):
     return await service.update_job_application(
-        job_application_id, job_application
+        job_application_id, job_application, user_data.id
     )
 
 @router.post("/{job_application_id}/manual-mail-trigger")
