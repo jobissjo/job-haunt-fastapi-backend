@@ -65,7 +65,7 @@ class JobApplicationService:
     async def get_job_application_by_id(
         self, job_application_id: str, user_id: str
     ) -> JobApplicationDetailResponse:
-        data = await self.repository.get_job_application_by_id(job_application_id)
+        data = await self.repository.get_job_application_by_id(job_application_id, user_id)
         return {
             "success": True,
             "data": data,
@@ -145,7 +145,7 @@ class JobApplicationService:
         }
 
     async def manual_job_application_mail_trigger(self, job_application_id: str, user_data: UserTokenDecodedData)->None:
-        job_application = await self.repository.get_job_application_by_id(job_application_id)
+        job_application = await self.repository.get_job_application_by_id(job_application_id, user_data.id)
         if not job_application:
             raise HTTPException(status_code=404, detail="Job application not found")
         email_setting = await self.user_email_settings_repository.get_active_email_setting(user_data.id)
