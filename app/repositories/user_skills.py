@@ -57,12 +57,11 @@ class UserSkillRepository:
 
     async def update_user_skill(
         self, user_skill_id: str, user_skill: UserSkillSchema
-    ) -> UserSkillResponse:
-        user_skill_response = await self.collection.update_one(
+    ) -> None:
+        await self.collection.update_one(
             {"_id": ObjectId(user_skill_id)}, {"$set": user_skill.model_dump()}
         )
-        user_skill_response["_id"] = str(user_skill_response["_id"])
-        return user_skill_response
+        
 
     async def delete_user_skill(self, user_skill_id: str) -> None:
         await self.collection.delete_one({"_id": ObjectId(user_skill_id)})

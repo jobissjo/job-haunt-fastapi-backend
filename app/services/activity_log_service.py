@@ -6,10 +6,10 @@ class ActivityLogService:
         self.activity_log_repository = ActivityLogRepository()
     
     async def get_activity_logs(self, user_id:str, limit:int, offset:int):
-        response = await self.activity_log_repository.get_activity_logs(user_id, limit, offset)
+        response, total = await self.activity_log_repository.get_activity_logs(user_id, limit, offset)
         return {
             "data": response,
-            "total_count": len(response)
+            "total_count": total
 
         }
     
